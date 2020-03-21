@@ -1,0 +1,115 @@
+.container-login{
+    display: flex;
+    height: 100vh;
+}
+
+// LEFT
+.login-left-side{
+    width: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-left-side-child{
+    width: 90%;
+    margin: 0 auto;
+    
+}
+
+.login-title{
+    display: flex;
+    justify-content: space-beteen;
+}
+
+.login-left-side h2{
+    color: $black;
+    font-size: $h2;
+    line-height: 0;
+    font-family: 'bold';
+}
+
+.login-left-side a{
+    text-decoration: none;
+    color: $placeholder;
+    margin: 27px 0 0 12px;
+    transition: ease 0.2s;
+    font-family: 'light';
+}
+
+.login-left-side a:hover{
+    transform: scale(0.9);
+}
+
+.login-left-side input{
+    padding: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+    border: solid 1px $border;
+    border-radius: 5px;
+}
+
+.login-left-side input::placeholder{
+    font-family: 'light';
+}
+
+.login-radio-btns{
+    display: flex;
+    justify-content: center;
+}
+
+.login-radio-btns input{
+    width: auto;
+    margin-right: 10px;
+}
+
+.login-radio-btns label{
+    margin: 3px 40px 0 0;
+}
+
+.login-left-side button{
+    border: none;
+    background-color: $green;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    padding: 14px 44px;
+    transition: ease 0.2s;
+    font-family: 'regular';
+}
+
+.login-left-side button:hover{
+    transform: scale(0.9);
+    cursor: pointer;
+}
+
+// RIGHT
+.login-right-side{
+    width: 65%;
+    background-color: $blue;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-right-side-child{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.login-right-side h1{
+    font-family: 'extra-bold';
+    font-size: $scream;
+    text-transform: uppercase;
+    color: $white;
+    margin: 0;
+    line-height: 100px;
+}
+
+.login-right-side p{
+    margin: -10px 0 0 0;
+    font-family: 'light';
+    width: 50%;
+}

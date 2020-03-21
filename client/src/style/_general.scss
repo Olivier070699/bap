@@ -1,0 +1,11 @@
+// COMPONENTS
+@import './components/_colors';
+@import './components/font-sizes';
+@import './components/fonts';
+
+// PAGES
+@import './login-register/index';
+
+.hide{
+    display: none;
+}
