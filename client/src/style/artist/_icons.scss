@@ -1,0 +1,13 @@
+.icon-add{
+    color: $black;
+    font-size: 50px;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    transition: ease 0.2s;
+}
+
+.icon-add:hover{
+    transform: scale(0.9);
+    cursor: pointer;
+}

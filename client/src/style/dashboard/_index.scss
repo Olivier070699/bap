@@ -1,0 +1,108 @@
+.header-dashboard{
+    width: 100%;
+    height: 12.5vh;
+    background-color: $white;
+    display: flex;
+}
+
+.header-dashboard h2{
+    margin: 8vh 0 0 calc(12% + 120px);
+    bottom: 0;
+    font-family: bold;
+    color: $blue;
+    text-transform: capitalize;
+}
+
+.header-dashboard p{
+    margin: calc(8vh + 9px) 0 0 0;
+    text-align: right;
+    font-family: 'regular';
+    position: absolute;
+    right: 50px;
+}
+
+.container-work-body{
+    display: flex;
+}
+
+.navigation{
+    height: 87.5vh;
+    width: 12%;
+    background-color: $white;
+    border-bottom-right-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.navigation-child{
+    background-color: #F3F3F5;
+    position: absolute;
+    height: 50px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+}
+
+.tooltip {
+    width: 100%;
+    position: relative;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: $black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    left: 75px;
+    font-family: 'light';
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+  }
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+.navigation li{
+    width: 50px;
+    height: 50px;
+    margin: 20px 0;
+    border-radius: 10px;
+    list-style: none;
+    transition: ease 0.2s;
+}
+
+.nav-icon{
+    background-color: $border;
+}
+
+.active{
+    background-color: $blue;
+}
+
+.navigation li:hover{
+    cursor: pointer;
+    transform: scale(0.9);
+}
+
+.work-body{
+    height: 87.5vh;
+    width: 88%;
+    background-image: linear-gradient(to bottom left, #FAFAFC, #F3F3F5);
+    border-top-left-radius: 110px;
+}

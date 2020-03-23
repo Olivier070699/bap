@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import firebase from '../../config/firebase'
 import '../../style/_general.scss'
 
+import Index_RightSideView from './components/Index_RightSide'
+
+
 export class Login extends Component {
     
     logInfo = (e) => {
@@ -13,8 +16,34 @@ export class Login extends Component {
 
     submitForm = (e) => {
         e.preventDefault()
-        console.log(this.state)
-        document.getElementById('login-form').reset()
+        let form = document.getElementById('login-form')
+
+        const auth = firebase.auth();
+        const promise = auth.signInWithEmailAndPassword(this.state.email, this.state.password);
+        promise
+            .then((response) => {
+                document.querySelector('.error-message').classList.add('hide')
+                const raw = firebase.database().ref('user');
+                raw.on('value', (snapshot) => {
+                  snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                      
+                    if (data.email.toLowerCase() === this.state.email.toLowerCase()) {
+                        let type = data.type.toLowerCase()
+                        console.log(type)
+                        this.setState({ 
+                            type: type,
+                        })
+                        window.location.href = `/dashboard-${type}`
+                    }
+                  });
+                });
+            })
+            .catch((error) => {
+                const errorMessage = error.message
+                document.querySelector('.error-message').classList.remove('hide')
+                document.querySelector('.error-message').innerHTML = errorMessage;
+            });
     }
     
     render() {
@@ -25,16 +54,14 @@ export class Login extends Component {
                         <div className="login-title"><h2>Log in</h2><a href="/register">Register</a></div>
                         <form id="login-form" onSubmit = {this.submitForm}>
                             <input id="email" type="email" placeholder="example@email.com" required onChange={this.logInfo}/>
-                            <input id="password" type="password" placeholder="xxxxxxxxxx" required onChange={this.logInfo}/>
+                            <input id="password" type="password" placeholder="xxxxxxxxxx" required onChange={this.logInfo} />
+                            <p className="error-message hide"></p>
                             <button>Log in</button>
                         </form>
                     </div>
                 </div>
                 <div className="login-right-side">
-                    <div className="login-right-side-child">
-                        <h1>Lorem <br />ipsum<br />dolarium!</h1>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor recusandae nesciunt ea consequatur temporibus esse animi, qui nisi eaque soluta, rerum modi, corporis dolorem mollitia explicabo sequi cumque aliquam. Consequatur?</p>
-                    </div>
+                    <Index_RightSideView/>
                 </div>
             </div>
         )
@@ -42,3 +69,5 @@ export class Login extends Component {
 }
 
 export default Login
+
+// CHECK USER TYPE FOR REDERECTING TO PAGE (DASHBOARD OR AGENDA)
