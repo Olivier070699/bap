@@ -7,8 +7,7 @@ import { faCalendarAlt,  } from '@fortawesome/free-solid-svg-icons'
 // COMPONENTS
 import LogoutBtn from '../../components/Logout'
 import Navigation from '../../components/Navigation'
-import PageTitle from '../../components/PageTitle'
-
+import Header from '../../components/Header'
 // var user = firebase.auth().currentUser;
 // var name, email, photoUrl, uid, emailVerified;
 
@@ -21,12 +20,12 @@ import PageTitle from '../../components/PageTitle'
 // }
 
 export class Index extends Component {
+
     render() {
         return (
             <div>
                 <div className="header-dashboard">
-                    <PageTitle/>
-                    <p>Goeiemorgen John</p>
+                    <Header/>
                 </div>
                 <div className="container-work-body">
                     <div className="navigation">

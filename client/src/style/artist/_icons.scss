@@ -1,13 +1,45 @@
-.icon-add{
+.icon-add, .icon-close{
     color: $black;
     font-size: 50px;
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
     transition: ease 0.2s;
 }
 
-.icon-add:hover{
+.icon-add:hover, .icon-close:hover{
     transform: scale(0.9);
     cursor: pointer;
 }
+
+.tooltip-add-artist {
+    position: fixed;
+    display: inline-block;
+    right: 50px;
+    bottom: 50px;
+  }
+  
+  .tooltip-add-artist .tooltiptext-left {
+    visibility: hidden;
+    width: 120px;
+    background-color: $black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 8px;
+    right: 75px;
+  }
+  
+  .tooltip-add-artist .tooltiptext-left::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent $black;
+  }
+  .tooltip-add-artist:hover .tooltiptext-left {
+    visibility: visible;
+  }

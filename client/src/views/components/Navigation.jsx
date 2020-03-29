@@ -21,11 +21,11 @@ export class Navigation extends Component {
         return (
             <div>
                  <ul>
-                    <a className="a-tag tooltip" href="/dashboard-agency"><li className="nav-icon dashboard"></li><span class="tooltiptext">dashboard</span></a>
-                    <a className="a-tag tooltip" href="/artist-agency"><li className="nav-icon artist"></li><span class="tooltiptext">artist</span></a>
-                    <a className="a-tag tooltip" href="/client-agency"><li className="nav-icon client"></li><span class="tooltiptext">client</span></a>
-                    <a className="a-tag tooltip" href="/calendar-agency"><li className="nav-icon calendar"></li><span class="tooltiptext">calendar</span></a>
-                    <a className="a-tag tooltip" href="/settings-agency"><li className="nav-icon settings"></li><span class="tooltiptext">settings</span></a>
+                    <a className="a-tag tooltip-navigation" href="/dashboard-agency"><li className="nav-icon dashboard"></li><span class="tooltiptextright">dashboard</span></a>
+                    <a className="a-tag tooltip-navigation" href="/artist-agency"><li className="nav-icon artist"></li><span class="tooltiptextright">artist</span></a>
+                    <a className="a-tag tooltip-navigation" href="/client-agency"><li className="nav-icon client"></li><span class="tooltiptextright">client</span></a>
+                    <a className="a-tag tooltip-navigation" href="/calendar-agency"><li className="nav-icon calendar"></li><span class="tooltiptextright">calendar</span></a>
+                    <a className="a-tag tooltip-navigation" href="/settings-agency"><li className="nav-icon settings"></li><span class="tooltiptextright">settings</span></a>
                 </ul>
             </div>
         )

@@ -1,0 +1,62 @@
+.container-showOwnArtist-child{
+    width: calc(90% - 120px);
+    margin: 75px 0 0 120px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container-artist{
+    width: 25%;
+    margin: 0 4% 220px 4%;
+    position: relative;
+}
+
+// .container-artist:first-child{
+//     margin: 0 6.25% 0 0;
+// }
+
+// .container-artist:last-child{
+//     margin: 0 0 0 6.25%;
+// }
+
+.container-artist-image{
+    height: 250px;
+    background-color: $red;
+    width: 100%;
+    border-radius: 25px;
+}
+
+.container-artist-text{
+    background-color: $white;
+    border-radius: 25px;
+    width: 100%;
+}
+
+.container-artist-text-child{
+    margin: 20px;
+}
+
+.container-artist-text{
+    min-height: 250px;
+    position: absolute;
+    top: 110px;
+}
+
+.container-artist-text h1{
+    color: $black;
+    font-family: 'regular';
+}
+
+.container-artist-text .artist-bioSnippet{
+    color: $placeholder;
+    font-family: 'light';
+}
+
+.artist-amountOfShows{
+    font-family: 'regular';
+    text-align: right;
+}
+
+.artist-amountOfShows span{
+    font-family: 'bold';
+}

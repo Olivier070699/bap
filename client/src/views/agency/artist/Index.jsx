@@ -7,7 +7,12 @@ import { faPlusCircle  } from '@fortawesome/free-solid-svg-icons'
 // COMPONENTS
 import LogoutBtn from '../../components/Logout'
 import Navigation from '../../components/Navigation'
-import PageTitle from '../../components/PageTitle'
+import Header from '../../components/Header'
+
+// PAGES
+import AddNewArtist from './AddNewArtist'
+import ShowOwnArtist from './ShowOwnArtist'
+import EditArtist from './EditArtist'
 
 // var user = firebase.auth().currentUser;
 // var name, email, photoUrl, uid, emailVerified;
@@ -21,12 +26,18 @@ import PageTitle from '../../components/PageTitle'
 // }
 
 export class Index extends Component {
+
+    addNewArtist = () => {
+        document.querySelector('.container-addNewArtist').classList.remove('hide')
+        document.querySelector('.tooltip-add-artist').classList.add('hide')
+        document.querySelector('.container-showOwnArtist').classList.add('hide')
+    }
+
     render() {
         return (
             <div>
                 <div className="header-dashboard">
-                    <PageTitle/>
-                    <p>Goeiemorgen John</p>
+                    <Header/>
                 </div>
                 <div className="container-work-body">
                     <div className="navigation">
@@ -34,10 +45,17 @@ export class Index extends Component {
                         <div className="navigation-child"></div>
                     </div>
                     <div className="work-body">
-                        <FontAwesomeIcon
-                            icon={faPlusCircle}
-                            className="icon-add"
-                        />
+                        <div className="tooltip-add-artist">
+                            <span className="tooltiptext-left">add new artist</span>
+                            <FontAwesomeIcon
+                                icon={faPlusCircle}
+                                className="icon-add"
+                                onClick={this.addNewArtist}
+                            />
+                        </div>
+                        <ShowOwnArtist/>
+                        <AddNewArtist/>
+                        <EditArtist/>
                     </div>
                 </div>
             </div>

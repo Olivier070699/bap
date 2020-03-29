@@ -1,0 +1,56 @@
+.container-edit-artist-child{
+    width: calc(90% - 120px);
+    margin: 75px 0 0 120px;
+    display: flex;
+
+    form{
+        width: 100%;
+    }
+
+    button{
+        border: none;
+        background-color: $green;
+        color: white;
+        text-align: center;
+        border-radius: 5px;
+        padding: 14px 44px;
+        transition: ease 0.2s;
+        font-family: 'regular';
+    }
+    
+    button:hover{
+        transform: scale(0.9);
+        cursor: pointer;
+    }
+}
+
+.container-edit-artist-left{
+    width: 65%;
+
+    :nth-child(1), :nth-child(2){
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    :nth-child(2){
+        min-height: 38.5vh;
+    }
+
+    :nth-child(3){
+        width: 50%;
+        box-sizing: border-box;
+    }
+
+    input, textarea{
+        padding: 14px;
+        margin: 10px 0;
+        border: solid 1px $border;
+        border-radius: 5px;
+    }
+}
+
+.container-edit-artist-right{
+    width: 35%;
+    min-height: 38.5vh;
+    background-color: $red;
+}

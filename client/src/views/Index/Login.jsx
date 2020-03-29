@@ -34,7 +34,11 @@ export class Login extends Component {
                         this.setState({ 
                             type: type,
                         })
-                        window.location.href = `/dashboard-${type}`
+                        firebase.auth().onAuthStateChanged(user => {
+                            if(user) {
+                              window.location = `/dashboard-${type}`;
+                            }
+                        });
                     }
                   });
                 });

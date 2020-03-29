@@ -8,13 +8,6 @@ export class Register extends Component {
 
     componentDidMount() {
         const db = firebase.database()
-        const findUserId = db.ref('user');
-        findUserId.on('value', (snapshot) => {
-            const user_id = snapshot.numChildren();
-            this.setState({
-                user_id: user_id +1
-            })
-        });
 
         const findAgencyId = db.ref('agency');
         findAgencyId.on('value', (snapshot) => {
@@ -67,8 +60,13 @@ export class Register extends Component {
         const auth = firebase.auth()
         const promise = auth.createUserWithEmailAndPassword(this.state.email, this.state.password);
         promise
-          .then((response) => {
-            console.log(response)
+            .then((result) => {
+                this.setState({
+                    user_id: result.user.uid
+                })
+                return result.user.updateProfile({
+                    displayName: this.state.name,
+                })
           })
           .catch((error) => {
             const errorMessage = error.message
@@ -76,15 +74,16 @@ export class Register extends Component {
             document.querySelector('.error-message').innerHTML = errorMessage;
           });
         
-        // SECOND LOG USER (id, name, email, adres, country, tel, type)
+        setTimeout(() => {
+            // SECOND LOG USER (id, name, email, adres, country, tel, type)
         firebase.database().ref('user').push({
-            id: this.state.user_id,
             name: this.state.name,
             email: this.state.email,
             adres: this.state.adress,
             country: this.state.country,
             tel: this.state.tel,
-            type: this.state.type
+            type: this.state.type,
+            id: this.state.user_id,
         })
 
         // THIRD REGISTER TYPE
@@ -108,11 +107,16 @@ export class Register extends Component {
                 price: '',
                 bio: '',
                 date_of_birth: this.state.date_of_birth,
-                agency_id: '',
+                agency_key: '',
             })
         }
         document.getElementById('login-form').reset()
-        window.location.href = `/dashboard-${this.state.type}`
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+              window.location = `/dashboard-${this.state.type}`
+            }
+        });
+        }, 1500);
     }
     
     render() {
@@ -164,3 +168,4 @@ export class Register extends Component {
 export default Register
 
 // HIDE SECTIONS AREN'T REQUIRED -> MOET VERANDEREN
+// CREATED ON

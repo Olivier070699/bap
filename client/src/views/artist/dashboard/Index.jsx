@@ -1,10 +1,33 @@
 import React, { Component } from 'react'
+import firebase from '../../../config/firebase'
 
 // COMPONENTS
-import LogoutBtn from '../../components/Logout'
-import Navigation from '../../components/Navigation'
+import Notifications from '../components/Notifications'
 
 export class Index extends Component {
+    
+    componentDidMount = () => {
+        firebase.auth().onAuthStateChanged(user => {
+            if (!user) {
+                window.location = '/login'
+            }
+            let uid = user.uid
+            localStorage.setItem('uid', uid)
+
+            // AGENCY ID
+            firebase.database().ref('/artist').on('value', snap => {
+                snap.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    if (data.user_id === uid) {
+                        localStorage.setItem('artist_id', data.id)
+                        localStorage.setItem('artist_name', data.agency_name)
+                        localStorage.setItem('artist_key', childSnapshot.key)
+                    }
+              });
+            });
+        });
+    }
+    
     render() {
         return (
             <div>
@@ -22,7 +45,7 @@ export class Index extends Component {
                     </ul>
                 </div>
                 <div>
-                    
+                    <Notifications/>
                 </div>
             </div>
         )
