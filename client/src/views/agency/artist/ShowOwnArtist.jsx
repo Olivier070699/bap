@@ -26,9 +26,9 @@ export class ShowOwnArtist extends Component {
     }
 
     editArtist = (e) => {
+        e.preventDefault()
         let artist_key = e.target.id
-
-        localStorage.setItem('editArtistKey', artist_key)
+        window.history.replaceState(null, null, `/artist-agency?key=${artist_key}`);
         document.querySelector('.container-addNewArtist').classList.add('hide')
         document.querySelector('.tooltip-add-artist').classList.add('hide')
         document.querySelector('.container-showOwnArtist').classList.add('hide')

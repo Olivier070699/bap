@@ -24,6 +24,11 @@
     }
 }
 
+.form-edit-artist-child{
+    display: flex;
+    position: relative;
+}
+
 .container-edit-artist-left{
     width: 65%;
 
@@ -46,11 +51,39 @@
         margin: 10px 0;
         border: solid 1px $border;
         border-radius: 5px;
+        font-family: 'light';
     }
 }
 
 .container-edit-artist-right{
-    width: 35%;
+    width: 30%;
     min-height: 38.5vh;
-    background-color: $red;
+    background-color: $white;
+    position: absolute;
+    right: 0;
+    top: 80px;
+    box-sizing: border-box;
+    border: solid 1px $border;
+    border-radius: 5px;
+    display: inline-block;
+
+    input{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
+
+    p{
+        margin: 0;
+        font-family: 'light';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
 }
