@@ -9,6 +9,11 @@
     cursor: pointer;
 }
 
+.top-btn{
+  margin-right: 2px;
+  margin-bottom: 60px;
+}
+
 .tooltip-add-artist {
     position: fixed;
     display: inline-block;
@@ -40,6 +45,7 @@
     border-style: solid;
     border-color: transparent transparent transparent $black;
   }
+
   .tooltip-add-artist:hover .tooltiptext-left {
     visibility: visible;
   }

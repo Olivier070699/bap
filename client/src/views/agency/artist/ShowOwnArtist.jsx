@@ -12,17 +12,12 @@ export class ShowOwnArtist extends Component {
             snapshot.forEach((childSnapshot) => {
                 const data = childSnapshot.val();
                 if (agencyKey === data.agency_key) {
-                    let content = `<div class="container-artist"><div class="container-artist-image"></div><div class="container-artist-text"><div class="container-artist-text-child"><h1>${data.artist_name}</h1><p class="artist-bioSnippet">${data.bio}</p><p class="artist-amountOfShows"><span>27</span> show this month</p><button id="${childSnapshot.key}" class="edit-btn">edit</buton></div></div></div>`
+                    let bio = data.bio.replace(/^(.{100}[^\s]*).*/, "$1") + "\n";
+                    let content = `<div class="container-artist"><div class="container-artist-image"><img src="${data.artist_image}"></div><div class="container-artist-text"><div class="container-artist-text-child"><h1>${data.artist_name}</h1><p class="artist-bioSnippet">${bio}...</p><p class="artist-amountOfShows"><span>27</span> show this month</p></div></div></div>`
                     artistContainer.insertAdjacentHTML('beforeend', content)
                 }
           });
         })
-        setTimeout(() => {
-            let editBtns = document.querySelectorAll('.edit-btn')
-            editBtns.forEach(editBtn => {
-                editBtn.addEventListener('click', this.editArtist)
-            });
-        }, 2000);
     }
 
     editArtist = (e) => {
@@ -30,7 +25,7 @@ export class ShowOwnArtist extends Component {
         let artist_key = e.target.id
         window.history.replaceState(null, null, `/artist-agency?key=${artist_key}`);
         document.querySelector('.container-addNewArtist').classList.add('hide')
-        document.querySelector('.tooltip-add-artist').classList.add('hide')
+        document.querySelector('.container-action-btns').classList.add('hide')
         document.querySelector('.container-showOwnArtist').classList.add('hide')
         document.querySelector('.container-edit-artist').classList.remove('hide')
     }
@@ -43,40 +38,6 @@ export class ShowOwnArtist extends Component {
                         <div className="container-artist-image"></div>
                         <div className="container-artist-text">
                             <div className="container-artist-text-child">
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="container-artist">
-                        <div className="container-artist-image"></div>
-                        <div className="container-artist-text">
-                            <div className="container-artist-text-child">
-                                <h1>Afrojack</h1>
-                                <p className="artist-bioSnippet">Lorem ipsum, dolor sit amet consectetur adipisicing elit. A rerum nostrum inventore reprehenderit quibusdam quasi totam quas labore, dicta voluptatibus!</p>
-                                <p className="artist-amountOfShows"><span>18</span> show this month</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="container-artist">
-                        <div className="container-artist-image"></div>
-                        <div className="container-artist-text">
-                            <div className="container-artist-text-child">
-                                <h1>Afrojack</h1>
-                                <p className="artist-bioSnippet">Lorem ipsum, dolor sit amet consectetur adipisicing elit. A rerum nostrum inventore reprehenderit quibusdam quasi totam quas labore, dicta voluptatibus!</p>
-                                <p className="artist-amountOfShows"><span>18</span> show this month</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="container-artist">
-                        <div className="container-artist-image"></div>
-                        <div className="container-artist-text">
-                            <div className="container-artist-text-child">
-                                <h1>Afrojack</h1>
-                                <p className="artist-bioSnippet">Lorem ipsum, dolor sit amet consectetur adipisicing elit. A rerum nostrum inventore reprehenderit quibusdam quasi totam quas labore, dicta voluptatibus!</p>
-                                <p className="artist-amountOfShows"><span>18</span> show this month</p>
                             </div>
                         </div>
                     </div>

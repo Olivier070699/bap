@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import firebase from '../../../config/firebase'
 import '../../../style/_general.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle  } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faPenSquare, faTimesCircle  } from '@fortawesome/free-solid-svg-icons'
 
 // COMPONENTS
 import LogoutBtn from '../../components/Logout'
@@ -29,8 +29,25 @@ export class Index extends Component {
 
     addNewArtist = () => {
         document.querySelector('.container-addNewArtist').classList.remove('hide')
-        document.querySelector('.tooltip-add-artist').classList.add('hide')
+        document.querySelector('.container-action-btns').classList.add('hide')
         document.querySelector('.container-showOwnArtist').classList.add('hide')
+        document.querySelector('.close-btn').classList.remove('hide')
+    }
+
+    editArtist = () => {
+        document.querySelector('.container-addNewArtist').classList.add('hide')
+        document.querySelector('.container-showOwnArtist').classList.add('hide')
+        document.querySelector('.container-edit-artist').classList.remove('hide')
+        document.querySelector('.container-action-btns').classList.add('hide')
+        document.querySelector('.close-btn').classList.remove('hide')
+    }
+
+    close() {
+        document.querySelector('.container-action-btns').classList.remove('hide')
+        document.querySelector('.container-showOwnArtist').classList.remove('hide')
+        document.querySelector('.container-edit-artist').classList.add('hide')
+        document.querySelector('.container-addNewArtist').classList.add('hide')
+        document.querySelector('.close-btn').classList.add('hide')
     }
 
     render() {
@@ -45,12 +62,32 @@ export class Index extends Component {
                         <div className="navigation-child"></div>
                     </div>
                     <div className="work-body">
-                        <div className="tooltip-add-artist">
-                            <span className="tooltiptext-left">add new artist</span>
+                        
+                        <div className="container-action-btns">
+                            <div className="tooltip-add-artist top-btn">
+                                <span className="tooltiptext-left">edit artist</span>
+                                <FontAwesomeIcon
+                                    icon={faPenSquare}
+                                    className="icon-add"
+                                    onClick={this.editArtist}
+                                />
+                            </div>
+                            <div className="tooltip-add-artist">
+                                <span className="tooltiptext-left">add new artist</span>
+                                <FontAwesomeIcon
+                                    icon={faPlusCircle}
+                                    className="icon-add"
+                                    onClick={this.addNewArtist}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="tooltip-add-artist close-btn hide">
+                            <span className="tooltiptext-left">close</span>
                             <FontAwesomeIcon
-                                icon={faPlusCircle}
+                                icon={faTimesCircle}
                                 className="icon-add"
-                                onClick={this.addNewArtist}
+                                onClick={this.close}
                             />
                         </div>
                         <ShowOwnArtist/>

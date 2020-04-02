@@ -8,16 +8,10 @@ import { faCalendarAlt,  } from '@fortawesome/free-solid-svg-icons'
 import LogoutBtn from '../../components/Logout'
 import Navigation from '../../components/Navigation'
 import Header from '../../components/Header'
-// var user = firebase.auth().currentUser;
-// var name, email, photoUrl, uid, emailVerified;
 
-// if (user != null) {
-//   name = user.displayName;
-//   email = user.email;
-//   photoUrl = user.photoURL;
-//   emailVerified = user.emailVerified;
-//   uid = user.uid; 
-// }
+// CALENDAR COMPONENTS
+import { ViewState } from '@devexpress/dx-react-scheduler';
+import { Scheduler, DayView, Appointments } from "@devexpress/dx-react-scheduler-material-ui";
 
 export class Index extends Component {
 
@@ -33,6 +27,7 @@ export class Index extends Component {
                         <div className="navigation-child"></div>
                     </div>
                     <div className="work-body">
+                       
                     </div>
                 </div>
             </div>

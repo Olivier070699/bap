@@ -7,8 +7,13 @@ import Index_RightSideView from './components/Index_RightSide'
 export class Register extends Component {
 
     componentDidMount() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+        today = mm + '/' + dd + '/' + yyyy;
+        
         const db = firebase.database()
-
         const findAgencyId = db.ref('agency');
         findAgencyId.on('value', (snapshot) => {
             const agency_id = snapshot.numChildren();
@@ -85,31 +90,34 @@ export class Register extends Component {
             type: this.state.type,
             id: this.state.user_id,
         })
-
-        // THIRD REGISTER TYPE
-        // 
-        //  AGENCY -> (id, user_id, agency_name, bookingsfee)
-        if (this.state.type === 'agency') {
-            firebase.database().ref('agency').push({
-                id: this.state.agency_id,
-                user_id: this.state.user_id,
-                agency_name: this.state.agency_name,
-                bookingsfee: this.state.bookingsfee,
-            })
-        }
-        // ARTIST -> (id, user_id, artist_name, label_id, price, bio, date_of_birth, agency_id)
-        else {
-            firebase.database().ref('artist').push({
-                id: this.state.artist_id,
-                user_id: this.state.user_id,
-                artist_name: this.state.artist_name,
-                label_id: '',
-                price: '',
-                bio: '',
-                date_of_birth: this.state.date_of_birth,
-                agency_key: '',
-            })
-        }
+            .then((result) => {
+                // THIRD REGISTER TYPE
+                // 
+                //  AGENCY -> (id, user_id, agency_name, bookingsfee)
+                if (this.state.type === 'agency') {
+                    firebase.database().ref('agency').push({
+                        id: this.state.agency_id,
+                        user_id: this.state.user_id,
+                        db_user_id:  result.path.pieces_[1],
+                        agency_name: this.state.agency_name,
+                        bookingsfee: this.state.bookingsfee,
+                    })
+                }
+                // ARTIST -> (id, user_id, artist_name, label_id, price, bio, date_of_birth, agency_id)
+                else {
+                    firebase.database().ref('artist').push({
+                        id: this.state.artist_id,
+                        user_id: this.state.user_id,
+                        db_user_id: result.path.pieces_[1],
+                        artist_name: this.state.artist_name,
+                        label_id: '',
+                        price: '',
+                        bio: '',
+                        date_of_birth: this.state.date_of_birth,
+                        agency_key: '',
+                    })
+                }
+        })
         document.getElementById('login-form').reset()
         firebase.auth().onAuthStateChanged(user => {
             if(user) {

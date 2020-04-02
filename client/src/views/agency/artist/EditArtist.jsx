@@ -6,23 +6,41 @@ import { faTimesCircle  } from '@fortawesome/free-solid-svg-icons'
 
 export class EditArtist extends Component {
 
+    state = {
+        artistKey: ''
+    }
+    
     componentDidMount = () => {
-        let url_string = window.location.href
-        let url = new URL(url_string);
-        let artistKey = url.searchParams.get("key");
-        
-        if (artistKey) {
-            this.setState({
-                artistKey: artistKey,
-            })
+        let agencyKey = localStorage.getItem('agency_key')
+        firebase.database().ref('artist').on('value', snapshot => {
+            snapshot.forEach((childSnapshot) => {
+                const data = childSnapshot.val();
+                if (agencyKey === data.agency_key) {
+                    let option = `<option value="${childSnapshot.key}">${data.artist_name}</option>`
+                    document.getElementById('artist_name').insertAdjacentHTML('beforeend', option)
+                }
+          });
+        })
+    }
 
-            firebase.database().ref(`artist/${artistKey}`).on('value', snap => {
-                let data = snap.val()
-                document.getElementById('artist_name').value = data.artist_name
+    logArtistChange = (e) => {
+        this.setState({
+            artistKey: e.target.value
+        })
+        this.showArtistInfo()
+    }
+
+    showArtistInfo = () => {
+        let artistKey = this.state.artistKey
+        console.log(`key ${artistKey}`)
+        firebase.database().ref(`artist/${artistKey}`).on('value', snapshot => {
+            snapshot.forEach((childSnapshot) => {
+                const data = childSnapshot.val();
+                console.log(data)
                 document.getElementById('bio').value = data.bio
                 document.getElementById('price').value = data.price
-            })
-        }
+          });
+        })
     }
 
     logPictureChanges = (e) => {
@@ -44,24 +62,14 @@ export class EditArtist extends Component {
     updateArtist = (e) => {
         e.preventDefault()
         let key = this.state.artistKey
-        let artist_name = document.getElementById('artist_name').value
         let bio = document.getElementById('bio').value
         let price = document.getElementById('price').value
         
         firebase.database().ref(`artist/${key}`).update({
-            artist_name,
             price,
             bio,
         })
         document.querySelector('.container-edit-artist-child form').reset()
-        window.history.replaceState(null, null, `/artist-agency`);
-    }
-
-    close() {
-        document.querySelector('.tooltip-add-artist').classList.remove('hide')
-        document.querySelector('.container-showOwnArtist').classList.remove('hide')
-        document.querySelector('.container-edit-artist').classList.add('hide')
-        window.history.replaceState(null, null, `/artist-agency`);
     }
 
     render() {
@@ -71,7 +79,7 @@ export class EditArtist extends Component {
                     <form>
                         <div className="form-edit-artist-child">
                             <div className="container-edit-artist-left">
-                                <input id="artist_name" type="text" placeholder="artistname"/>
+                                <select id="artist_name" onChange={this.logArtistChange}><option disabled selected value> -- select an artist -- </option></select>
                                 <textarea id="bio" placeholder="bio"></textarea>
                                 <input id="price" type="number" placeholder="price"/>
                             </div>
@@ -83,17 +91,11 @@ export class EditArtist extends Component {
                         <button onClick={this.updateArtist}>save</button>
                     </form>
                 </div>
-                <div className="tooltip-add-artist">
-                    <span className="tooltiptext-left">close</span>
-                    <FontAwesomeIcon
-                        icon={faTimesCircle}
-                        className="icon-add"
-                        onClick={this.close}
-                    />
-                </div>
             </div>
         )
     }
 }
 
 export default EditArtist
+
+// STATE IS TO SLOW

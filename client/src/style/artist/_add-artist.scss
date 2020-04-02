@@ -2,66 +2,75 @@
     width: calc(90% - 120px);
     margin: 75px 0 0 120px;
     position: relative;
-}
 
-// SEARCH OPTIONS
-.container-addNewArtist-child ul{
-    display: flex;
-    margin: 0;
-    padding: 0;
-    border-bottom: solid 0.5px $border2;
-}
+    ul{
+        display: flex;
+        margin: 0;
+        padding: 0;
+        border-bottom: solid 0.5px $border2;
+    }
+    
+    li{
+        color: $black;
+        list-style: none;
+        font-family: 'regular';
+        padding-bottom: 5px;
+        margin-right: 80px;
+    }
+    
+    li:hover, .artist-filter-active{
+        color: $blue;
+        border-bottom: solid 2px $blue;
+        cursor: pointer;
+    }
 
-.container-addNewArtist-child li{
-    list-style: none;
-    font-family: 'regular';
-    color: $black;
-    padding-bottom: 5px;
-    margin-right: 80px;
-}
+    // TABLE
+    table{
+        width: 100%;
+        margin-top: 20px;
+        border-spacing: 0 20px;
+        // border-collapse: collapse;
+        color: $black;
+    }
 
-.container-addNewArtist-child li:hover{
-    color: $blue;
-    border-bottom: solid 2px $blue;
-    cursor: pointer;
+    table th{
+        color: $black;
+        font-family: 'light';
+        text-align: left;
+        padding-left: 75px;
+    }
+
+    table td{
+        font-family: 'light';
+        text-align: left;
+        padding: 12px 0 12px 75px;
+    }
 }
 
 .container-search{
     position: absolute;
     right: 0;
     top: -20px;
+
+    input{
+        padding: 10px;
+        margin: 0 5px 0 0;
+        border-radius: 30px;
+        border: none;
+        width: 220px;
+        background-color: $white;
+        color: $black;
+        font-family: 'light';
+    }
+    
+    input::placeholder{
+        color: $placeholder;
+        font-family: 'light';
+    }
 }
 
-.container-search input{
-    padding: 10px;
-    margin: 0 5px 0 0;
-    border-radius: 30px;
-    border: none;
-    width: 220px;
-    background-color: $white;
-    color: $black;
-    font-family: 'light';
-}
-
-.container-search input::placeholder{
-    color: $placeholder;
-    font-family: 'light';
-}
-
-// TABLE
-.container-addNewArtist-child table{
-    width: 100%;
-    margin-top: 20px;
-    border-spacing: 0 20px;
-    // border-collapse: collapse;
-    color: $black;
-}
-
-.container-addNewArtist-child table th{
-    color: $black;
-    font-family: 'light';
-    text-align: left;
-    padding-left: 75px;
+.filter-sort:hover{
+    cursor: pointer;
 }
 
 .content-add-artist{
@@ -77,10 +86,4 @@
 .invite-artist:hover{
     transform: scale(0.9);
     cursor: pointer;
-}
-
-.container-addNewArtist-child table td{
-    font-family: 'light';
-    text-align: left;
-    padding: 12px 0 12px 75px;
 }

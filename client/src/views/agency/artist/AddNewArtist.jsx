@@ -8,12 +8,18 @@ export class AddNewArtist extends Component {
     
     componentDidMount = () => {
         let table = document.getElementById('table-content');
+        table.innerHTML = ''
+        table.insertAdjacentHTML('beforeend', '<tr><th class="filter-sort">Name</th><th class="filter-sort">Artistname</th><th>Date of Birth</th><th>Country</th><th></th></tr>')
         const raw = firebase.database().ref('artist');
         raw.on('value', (snapshot) => {
           snapshot.forEach((childSnapshot) => {
                 const data = childSnapshot.val();
-                const content = `<tr class="content-add-artist"><td class="name">Olivier Decock</td><td class="artistname">${data.artist_name}</td><td>${data.date_of_birth}</td><td>Belgium</td><td class="invite-artist" id="${data.user_id}">invite artist</td></tr>`
-                table.insertAdjacentHTML('beforeend', content);
+              if (data.agency_key === '') {
+                firebase.database().ref(`user/${data.db_user_id}`).on('value', snap => {
+                    const content = `<tr class="content-add-artist"><td class="name">${snap.val().name}</td><td class="artistname">${data.artist_name}</td><td>${data.date_of_birth}</td><td>${snap.val().country}</td><td class="invite-artist" id="${data.user_id}">invite artist</td></tr>`
+                    table.insertAdjacentHTML('beforeend', content);
+                })  
+              }
           });
         });
         this.addEventListeners()
@@ -24,6 +30,11 @@ export class AddNewArtist extends Component {
             let tds = document.querySelectorAll('.invite-artist')
             tds.forEach(td => {
                 td.addEventListener('click', this.inviteArtist)
+            });
+
+            let sortTds = document.querySelectorAll('.filter-sort')
+            sortTds.forEach(sortTd => {
+                sortTd.addEventListener('click', this.sortAlphabetic)
             });
         }, 1500);
     }
@@ -41,22 +52,58 @@ export class AddNewArtist extends Component {
             agency_key: agencyKey,
         })
     }
-    
-    closeNewArtist = () => {
-        document.querySelector('.container-addNewArtist').classList.add('hide')
-        document.querySelector('.tooltip-add-artist').classList.remove('hide')
-        document.querySelector('.container-showOwnArtist').classList.remove('hide')
-    }
 
     search = (e) => {
-        let value = e.target.value
+        let value = e.target.value.toLowerCase()
         let names = document.querySelectorAll('.name')
         names.forEach(name => {
-            let tr_namevalue = name.innerHTML
+            let tr_namevalue = name.innerHTML.toLowerCase()
             if (!tr_namevalue.includes(value)) {
                 // SEARCH
+                name.parentNode.classList.add('hide')
+            } else {
+                name.parentNode.classList.remove('hide')
             }
         });
+    }
+
+    changeFilter = (e) => {
+        document.querySelector('.artist-filter-active').classList.remove('artist-filter-active')
+        e.target.classList.add('artist-filter-active')
+    }
+
+    sortAlphabetic = (e) => {
+        let table, rows, switching, i, x, y, shouldSwitch, columNumber
+
+        if (e.target.innerHTML === 'Name') {
+            columNumber = 0
+        } else {
+            columNumber = 1
+        }
+
+        table = document.getElementById("table-content");
+        switching = true;
+
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            
+            for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            
+            x = rows[i].getElementsByTagName("TD")[columNumber];
+            y = rows[i + 1].getElementsByTagName("TD")[columNumber];
+            
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            }
+        }
     }
 
     render() {
@@ -64,8 +111,8 @@ export class AddNewArtist extends Component {
             <div className="container-addNewArtist hide">                
                 <div className="container-addNewArtist-child">
                     <ul>
-                        <li>All users</li>
-                        <li>New users</li>
+                        <li className="artist-filter-active" onClick={this.changeFilter}>All users</li>
+                        <li onClick={this.changeFilter}>New users</li>
                         <li>
                             <div className="container-search">
                                 <input
@@ -78,23 +125,8 @@ export class AddNewArtist extends Component {
                     </ul>
 
                     <table id="table-content">
-                        <tr>
-                            <th>Name</th>
-                            <th>Artistname</th>
-                            <th>Date of Birth</th>
-                            <th>Country</th>
-                            <th></th>
-                        </tr>
+                        
                     </table>
-                </div>
-                
-                <div className="tooltip-add-artist">
-                    <span className="tooltiptext-left">close</span>
-                    <FontAwesomeIcon
-                        icon={faTimesCircle}
-                        className="icon-close"
-                        onClick={this.closeNewArtist}
-                    />
                 </div>
             </div>
         )
@@ -103,6 +135,7 @@ export class AddNewArtist extends Component {
 
 export default AddNewArtist
 
-// ALFABETISCH ORDENEN
-// CLEAR TABLE
+
 // IF ARTIST IS INVITED REMOVE FROM LIST
+// ZOEKEN OP NAAM & ARTIESTEN NAAM
+// ZOEKEN OP NEW USER: user.metadata.creationTime.substring(5)
