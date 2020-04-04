@@ -9,7 +9,7 @@ export class AddNewArtist extends Component {
     componentDidMount = () => {
         let table = document.getElementById('table-content');
         table.innerHTML = ''
-        table.insertAdjacentHTML('beforeend', '<tr><th class="filter-sort">Name</th><th class="filter-sort">Artistname</th><th>Date of Birth</th><th>Country</th><th></th></tr>')
+        table.insertAdjacentHTML('beforeend', '<tr><th class="filter-sort">Name</th><th class="filter-sort">Artist name</th><th>Date of Birth</th><th>Country</th><th></th></tr>')
         const raw = firebase.database().ref('artist');
         raw.on('value', (snapshot) => {
           snapshot.forEach((childSnapshot) => {
@@ -55,7 +55,7 @@ export class AddNewArtist extends Component {
 
     search = (e) => {
         let value = e.target.value.toLowerCase()
-        let names = document.querySelectorAll('.name')
+        let names = document.querySelectorAll('.artistname')
         names.forEach(name => {
             let tr_namevalue = name.innerHTML.toLowerCase()
             if (!tr_namevalue.includes(value)) {
@@ -116,7 +116,7 @@ export class AddNewArtist extends Component {
                         <li>
                             <div className="container-search">
                                 <input
-                                    placeholder="search"
+                                    placeholder="search artist name"
                                     id="search-value"
                                     onChange={this.search}
                                 />
