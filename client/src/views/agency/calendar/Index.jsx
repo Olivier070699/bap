@@ -12,11 +12,9 @@ import Header from '../../components/Header'
 import AddDate from './AddDate'
 
 // CALENDAR COMPONENTS
-import Paper from '@material-ui/core/Paper';
-import { ViewState } from '@devexpress/dx-react-scheduler';
-import { Scheduler, DayView, Appointments } from "@devexpress/dx-react-scheduler-material-ui";
-
 import { Inject, ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, EventSettingsModel } from '@syncfusion/ej2-react-schedule'
+import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns'
+import {DateTimePickerComponent} from '@syncfusion/ej2-react-calendars'
 
 
 export class Index extends Component {
@@ -45,10 +43,11 @@ export class Index extends Component {
                         <div className="navigation-child"></div>
                     </div>
                     <div className="work-body">
-                        {/* <ScheduleComponent currentView="Month" selectedDate={new Date(2020, 4, 4)}>
+                        <ScheduleComponent>
                             <Inject services={[Day, Week, WorkWeek, Month, Agenda]}/>
-                        </ScheduleComponent> */}
+                        </ScheduleComponent>
                         <AddDate/>
+                        
                         <div className="tooltip-add-artist add-btn">
                             <span className="tooltiptext-left">add date</span>
                             <FontAwesomeIcon
