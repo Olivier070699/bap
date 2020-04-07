@@ -6,31 +6,14 @@ import { faPlusCircle, faPenSquare, faTimesCircle  } from '@fortawesome/free-sol
 
 
 // COMPONENTS
-import LogoutBtn from '../../components/Logout'
 import Navigation from '../../components/Navigation'
 import Header from '../../components/Header'
-import AddDate from './AddDate'
 
 // CALENDAR COMPONENTS
-import { Inject, ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, EventSettingsModel } from '@syncfusion/ej2-react-schedule'
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns'
-import {DateTimePickerComponent} from '@syncfusion/ej2-react-calendars'
+import AddDate from './AddDate'
 
 
 export class Index extends Component {
-    
-    addArtist = (e) => {
-        document.querySelector('.container-add-new-date').classList.remove('hide')
-        document.querySelector('.close-btn').classList.remove('hide')
-        document.querySelector('.add-btn').classList.add('hide')
-    }
-
-    close = (e) => {
-        document.querySelector('.add-btn').classList.remove('hide')
-        document.querySelector('.container-add-new-date').classList.add('hide')
-        document.querySelector('.close-btn').classList.add('hide')
-    }
-    
     render() {
         return (
             <div>
@@ -43,27 +26,7 @@ export class Index extends Component {
                         <div className="navigation-child"></div>
                     </div>
                     <div className="work-body">
-                        <ScheduleComponent>
-                            <Inject services={[Day, Week, WorkWeek, Month, Agenda]}/>
-                        </ScheduleComponent>
-                        <AddDate/>
-                        
-                        <div className="tooltip-add-artist add-btn">
-                            <span className="tooltiptext-left">add date</span>
-                            <FontAwesomeIcon
-                                icon={faPlusCircle}
-                                className="icon-add"
-                                onClick={this.addArtist}
-                            />
-                        </div>
-                        <div className="tooltip-add-artist close-btn hide">
-                            <span className="tooltiptext-left">close</span>
-                            <FontAwesomeIcon
-                                icon={faTimesCircle}
-                                className="icon-add"
-                                onClick={this.close}
-                            />
-                        </div>
+                        <AddDate />
                     </div>
                 </div>
             </div>

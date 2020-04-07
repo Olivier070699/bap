@@ -1,0 +1,49 @@
+.container-settings{
+    width: calc(90% - 120px);
+    margin: 75px 0 0 120px;
+
+    form{
+        width: 65%;
+
+        input, select{
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: solid 1px $border;
+            border-radius: 5px;
+            font-family: 'light';
+            box-sizing: border-box;
+        }
+
+        div{
+            display: flex;
+
+            :nth-child(2){
+                width: 50%;
+                margin: auto 2%;
+            }
+
+            :nth-child(3){
+                margin-right: 2%;
+            }
+        }
+
+
+
+        button{
+            border: none;
+            background-color: $green;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            padding: 14px 44px;
+            transition: ease 0.2s;
+            font-family: 'regular';
+        }
+        
+        button:hover{
+            transform: scale(0.9);
+            cursor: pointer;
+        }
+    }
+}
