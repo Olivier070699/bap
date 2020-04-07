@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import '../../../style/_general.scss'
 import firebase from '../../../config/firebase'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimesCircle  } from '@fortawesome/free-solid-svg-icons'
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+
 
 export class EditArtist extends Component {
 
@@ -27,19 +30,18 @@ export class EditArtist extends Component {
         this.setState({
             artistKey: e.target.value
         })
-        this.showArtistInfo()
+        setTimeout(() => {
+            this.showArtistInfo()
+        }, 5);
     }
 
     showArtistInfo = () => {
         let artistKey = this.state.artistKey
         console.log(`key ${artistKey}`)
         firebase.database().ref(`artist/${artistKey}`).on('value', snapshot => {
-            snapshot.forEach((childSnapshot) => {
-                const data = childSnapshot.val();
-                console.log(data)
-                document.getElementById('bio').value = data.bio
-                document.getElementById('price').value = data.price
-          });
+            let data = snapshot.val()
+            document.getElementById('bio').value = data.bio
+            document.getElementById('price').value = data.price
         })
     }
 
@@ -69,6 +71,12 @@ export class EditArtist extends Component {
             price,
             bio,
         })
+        .then(() => { 
+            NotificationManager.success('Update is successfully done.', 'Succeeded!');
+        })
+        .catch((e) => {
+            NotificationManager.error(e.message, 'Error!');
+        })
         document.querySelector('.container-edit-artist-child form').reset()
     }
 
@@ -91,6 +99,7 @@ export class EditArtist extends Component {
                         <button onClick={this.updateArtist}>save</button>
                     </form>
                 </div>
+                <NotificationContainer/>
             </div>
         )
     }
@@ -99,3 +108,8 @@ export class EditArtist extends Component {
 export default EditArtist
 
 // STATE IS TO SLOW
+// NotificationManager.info('Info message');
+// NotificationManager.success('Success message', 'Title here');
+// NotificationManager.error('Success message', 'Title here');
+
+// ALS ER GESELECTEERD WORDT DE VALUES INLADEN

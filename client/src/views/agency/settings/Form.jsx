@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import firebase from '../../../config/firebase'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 export class Form extends Component {
     
@@ -86,6 +88,7 @@ export class Form extends Component {
                     
                     <button>update</button>
                 </form>
+                <NotificationContainer />
             </div>
         )
     }
@@ -94,3 +97,6 @@ export class Form extends Component {
 export default Form
 
 // BACK TO LOGIN AFTER CHANGE PASSWORD ISN'T RIGHT
+// NotificationManager.info('Info message');
+// NotificationManager.success('Success message', 'Title here');
+// NotificationManager.error('Success message', 'Title here');
