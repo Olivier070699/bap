@@ -1,0 +1,28 @@
+.table-bill-content{
+    // TABLE
+    table{
+        width: 100%;
+        margin-top: 20px;
+        border-spacing: 0 20px;
+        // border-collapse: collapse;
+        color: $black;
+    }
+
+    table th{
+        color: $black;
+        font-family: 'light';
+        text-align: left;
+        padding-left: 75px;
+    }
+
+    table td{
+        font-family: 'light';
+        text-align: left;
+        padding: 12px 0 12px 75px;
+    }
+
+    .content-client{
+        background-color: $white;
+        border: solid 0.5px $border2;
+    }
+}

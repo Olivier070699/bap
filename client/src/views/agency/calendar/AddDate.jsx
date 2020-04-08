@@ -97,6 +97,7 @@ export class AddDate extends Component {
 
   saveDate = (e) => {
     e.preventDefault()
+    let agency_key = localStorage.getItem('agency_key')
     let adres = `${this.state.street} ${this.state.number}, ${this.state.city} ${this.state.country}`
     firebase.database().ref(`events`).push({
         artist: this.state.artist,
@@ -105,6 +106,7 @@ export class AddDate extends Component {
         start: this.state.start,
         stop: this.state.stop,
         adres: adres,
+        agency_key,
     })
     document.querySelector('#calendar form').reset() 
   }

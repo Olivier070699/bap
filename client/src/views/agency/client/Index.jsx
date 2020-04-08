@@ -5,19 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendarAlt,  } from '@fortawesome/free-solid-svg-icons'
 
 // COMPONENTS
-import LogoutBtn from '../../components/Logout'
 import Navigation from '../../components/Navigation'
 import Header from '../../components/Header'
-// var user = firebase.auth().currentUser;
-// var name, email, photoUrl, uid, emailVerified;
-
-// if (user != null) {
-//   name = user.displayName;
-//   email = user.email;
-//   photoUrl = user.photoURL;
-//   emailVerified = user.emailVerified;
-//   uid = user.uid; 
-// }
+import Form from './Form'
+import PDF from './Pdf'
 
 export class Index extends Component {
 
@@ -33,6 +24,8 @@ export class Index extends Component {
                         <div className="navigation-child"></div>
                     </div>
                     <div className="work-body">
+                        {/* <Form /> */}
+                        <PDF/>
                     </div>
                 </div>
             </div>
