@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import firebase from '../../../config/firebase'
 import Calendar from 'tui-calendar'
 import "tui-calendar/dist/tui-calendar.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft, faChevronRight, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 export class AddDate extends Component {
 
@@ -29,8 +31,18 @@ export class AddDate extends Component {
 
     // CLICK EVENTS
     calendar.on({
-      'beforeUpdateSchedule': function(e) {
-          console.log('beforeUpdateSchedule', e);
+      'beforeUpdateSchedule': function (e) {
+        document.querySelector('.btn-save-date').classList.add('hide')
+        document.querySelector('.btn-update-date').classList.remove('hide')
+
+        firebase.database().ref(`events/${e.schedule.id}`).on('value', snapshot => {
+          let data = snapshot.val()
+
+          document.getElementById('event').value = data.event
+          document.getElementById('start').value = data.start
+          document.getElementById('stop').value = data.stop
+        })
+        document.querySelector('.form-new-date').classList.remove('hide')
       },
       'beforeDeleteSchedule': function(e) {
           firebase.database().ref(`events/${e.schedule.id}`).remove()
@@ -83,7 +95,7 @@ export class AddDate extends Component {
     })
   }
 
-  onSubmit = (e) => {
+  saveDate = (e) => {
     e.preventDefault()
     let adres = `${this.state.street} ${this.state.number}, ${this.state.city} ${this.state.country}`
     firebase.database().ref(`events`).push({
@@ -95,6 +107,10 @@ export class AddDate extends Component {
         adres: adres,
     })
     document.querySelector('#calendar form').reset() 
+  }
+
+  updateEvent = (e) => {
+    e.preventDefault()
   }
 
   // MOVE TO today/prev/next
@@ -120,40 +136,79 @@ export class AddDate extends Component {
     calendar.changeView(`${e.target.value}`, true);
   }
 
+  // OPEN NEW DATE
+  newDate = () => {
+    document.querySelector('.form-new-date').classList.remove('hide')
+    document.querySelector('.btn-save-date').classList.remove('hide')
+    document.querySelector('.btn-update-date').classList.add('hide')
+  }
+
+  close = () => {
+    document.querySelector('.form-new-date').classList.add('hide')
+    document.querySelector('#calendar form').reset()
+    this.setState({
+      artist: '',
+      event: '',
+      start: '',
+      stop: '',
+    })
+  }
+
   render() {
     return (
-      <div id="calendar">
-        <button value="prev" onClick={this.prev}>prev</button>
-        <button value="today" onClick={this.today}>today</button>
-        <button value="next" onClick={this.next}>next</button>
-
-        <select onChange={this.changeView}>
-          <option value="month">Month</option>
-          <option value="week">Week</option>
-          <option value="day">Day</option>
-        </select>
-
-        <form onSubmit={this.onSubmit}>
-          <select id="artist" onChange={this.logChanges} required>
-              <option disabled selected value> -- select an artist -- </option>
-          </select>
-
-          <select id="client" onChange={this.logChanges} required>
-              <option disabled selected value> -- select a client -- </option>
-          </select>
-
-          <input id="event" onChange={this.logChanges} type="text" placeholder="event name" required/>
-          <input id="start" onChange={this.logChanges} type="datetime-local" placeholder="start" required/>
-          <input id="stop" onChange={this.logChanges} type="datetime-local" placeholder="stop" required/>
+      <div className="container-add-new-date">
           
+        <div className="container-calendar-navigation">
+          <select onChange={this.changeView}>
+            <option value="month">month</option>
+            <option value="week">week</option>
+            <option value="day">day</option>
+          </select>
+          <button value="today" onClick={this.today}>today</button>
+          <button onClick={this.newDate}>new</button>
+
           <div>
-              <input id="street" onChange={this.logChanges} type="text" placeholder="street" required/>
-              <input id="number" onChange={this.logChanges} type="number" placeholder="number" required/>
-              <input id="city" onChange={this.logChanges} type="text" placeholder="city" required/>
-              <input id="country" onChange={this.logChanges} type="text" placeholder="country" required/>
-          </div>
-          <button>save</button>
-        </form>
+            <FontAwesomeIcon
+                icon={faChevronLeft}
+                className="navigation-component"
+                onClick={this.prev}
+            />
+            <FontAwesomeIcon
+                icon={faChevronRight}
+                className="navigation-component"
+                onClick={this.next}
+            />
+          </div>  
+        </div>
+
+        <div id="calendar">
+          <form className="form-new-date hide">
+          <FontAwesomeIcon
+                icon={faTimesCircle}
+                className="form-new-date-close"
+                onClick={this.close}
+            />
+              <select id="artist" onChange={this.logChanges} required>
+                  <option disabled selected value> -- select an artist -- </option>
+              </select>
+
+              <select id="client" onChange={this.logChanges} required>
+                  <option disabled selected value> -- select a client -- </option>
+              </select>
+
+              <input id="event" onChange={this.logChanges} type="text" placeholder="event name" required/>
+              <input id="start" onChange={this.logChanges} type="datetime-local" placeholder="start" required/>
+              <input id="stop" onChange={this.logChanges} type="datetime-local" placeholder="stop" required/>
+              <div>
+                  <input id="street" onChange={this.logChanges} type="text" placeholder="street" required/>
+                  <input id="number" onChange={this.logChanges} type="number" placeholder="number" required/>
+                  <input id="city" onChange={this.logChanges} type="text" placeholder="city" required/>
+                  <input id="country" onChange={this.logChanges} type="text" placeholder="country" required/>
+              </div>
+              <button className="btn-save-date" onClick={this.saveDate}>save</button>
+              <button className="btn-update-date hide" onClick={this.updateEvent}>update</button>
+            </form>
+        </div>
       </div>
     )
   }

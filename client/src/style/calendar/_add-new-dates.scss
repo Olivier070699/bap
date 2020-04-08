@@ -1,49 +1,125 @@
 .container-add-new-date{
     width: calc(90% - 120px);
     margin: 75px 0 0 120px;
+    display: flex;
 
-    form{
-        width: 65%;
+    .container-calendar-navigation{
+        width: 125px;
+        margin-right: 35px;
 
-        input, select{
+        :first-child{
+            margin-top: 0px
+        }
+
+        .navigation-component{
+            font-size: 15px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            color: $black;
+            background-color: white;
+            padding: 10px;
+            transition: ease 0.2s;
+            margin: 0 10px;
+        }
+
+        select, button{
+            border: 1px solid #e5e5e5;
+            background-color: $white;
             width: 100%;
             padding: 14px;
             margin: 10px 0;
-            border: solid 1px $border;
             border-radius: 5px;
             font-family: 'light';
             box-sizing: border-box;
+            color: $black;
+            transition: ease 0.2s;
         }
 
         div{
-            display: flex;
-
-            :nth-child(2){
-                width: 50%;
-                margin: auto 2%;
-            }
-
-            :nth-child(3){
-                margin-right: 2%;
-            }
-        }
-
-
-
-        button{
-            border: none;
-            background-color: $green;
-            color: white;
             text-align: center;
-            border-radius: 5px;
-            padding: 14px 44px;
-            transition: ease 0.2s;
-            font-family: 'regular';
+            margin-top: 10px;
         }
-        
-        button:hover{
+
+        .navigation-component:hover, button:hover{
+            cursor: pointer;
+            transform: scale(0.9);
+        }
+    }
+
+    #calendar{
+        width: calc(100% - 125px);
+        position: relative;
+
+        .form-new-date-close{
+            font-size: 30px;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: $white;
+            transition: ease 0.2s;
+        }
+
+        .form-new-date-close:hover{
             transform: scale(0.9);
             cursor: pointer;
         }
-    }
+
+        form{
+            width: 65%;
+            background-color: $white;
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            z-index: 5;
+            -webkit-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.75);
+            box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.75);
+    
+            input, select{
+                width: 100%;
+                padding: 14px;
+                margin: 10px 0;
+                border: solid 1px $border;
+                border-radius: 5px;
+                font-family: 'light';
+                box-sizing: border-box;
+            }
+    
+            div{
+                display: flex;
+    
+                :nth-child(2){
+                    width: 50%;
+                    margin: auto 2%;
+                }
+    
+                :nth-child(3){
+                    margin-right: 2%;
+                }
+            }
+    
+            button{
+                border: none;
+                background-color: $green;
+                color: white;
+                text-align: center;
+                border-radius: 5px;
+                padding: 14px 44px;
+                transition: ease 0.2s;
+                font-family: 'regular';
+            }
+            
+            button:hover{
+                transform: scale(0.9);
+                cursor: pointer;
+            }
+        }
+    }  
 }
