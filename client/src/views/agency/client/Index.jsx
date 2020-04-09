@@ -8,7 +8,6 @@ import { faCalendarAlt,  } from '@fortawesome/free-solid-svg-icons'
 import Navigation from '../../components/Navigation'
 import Header from '../../components/Header'
 import Form from './Form'
-import PDF from './Pdf'
 
 export class Index extends Component {
 
@@ -24,8 +23,7 @@ export class Index extends Component {
                         <div className="navigation-child"></div>
                     </div>
                     <div className="work-body">
-                        {/* <Form /> */}
-                        <PDF/>
+                        <Form />
                     </div>
                 </div>
             </div>

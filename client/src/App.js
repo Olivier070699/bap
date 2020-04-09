@@ -16,6 +16,7 @@ import ArtistAgencyView from './views/agency/artist/Index'
 import ClientAgencyView from './views/agency/client/Index'
 import CalendarAgencyView from './views/agency/calendar/Index'
 import SettingsAgencyView from './views/agency/settings/Index'
+import PDF from './views/agency/client/Pdf'
 
 // ARTIST
 import DashboardArtistView from './views/artist/dashboard/Index'
@@ -32,6 +33,7 @@ function App() {
         <Route path="/dashboard-agency" component={DashboardAgencyView} exact />
         <Route path="/artist-agency" component={ArtistAgencyView} exact />
         <Route path="/client-agency" component={ClientAgencyView} exact />
+        <Route path="/client-agency-PDF" component={PDF} exact />
         <Route path="/calendar-agency" component={CalendarAgencyView} exact />
         <Route path="/settings-agency" component={SettingsAgencyView} exact />
 

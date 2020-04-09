@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import firebase from '../../../config/firebase'
 import '../../../style/_general.scss'
+import jsPDF from 'jspdf'
 
 export class Form extends Component {
     
@@ -13,6 +14,7 @@ export class Form extends Component {
         agencyName: '',
         artistPrice: '',
         artistName: '',
+        eventID :''
     }
     
     componentDidMount = () => {
@@ -39,6 +41,9 @@ export class Form extends Component {
 
     getBillInfo = (e) => {
         let eventID = e.target.id
+        this.setState({
+            eventID,
+        })
         let agencyID = localStorage.getItem('agency_key')
         let artistID
 
@@ -70,38 +75,40 @@ export class Form extends Component {
                 artistPrice: Number(data.price),
                 artistName: data.artist_name,
             })
+            this.downloadPDF()
         })
-        this.downloadPDF()
     }
 
     downloadPDF = () => {
-       setTimeout(() => {
-        console.log(this.state)
-       }, 1000);
+        let doc = new jsPDF('p', 'pt')
+        // POSITION POSITION TEXT
+        let totalPrice = this.state.artistPrice * this.state.bookingsfee
+        let text = `Voor uw event (${this.state.eventName} te ${this.state.adres}) had u bij ons (${this.state.agencyName}) DJ ${this.state.artistName} gebookt van ${this.state.start} tot ${this.state.stop}, de prijs hier voor bedraagd €${this.state.artistPrice} + ${this.state.bookingsfee}% bookingsfee, een totaal van €${totalPrice}`
+        doc.text(20, 20, text)
+        doc.save(`${this.state.eventName} - ${this.state.artistName}`)
+    
     }
     render() {
         return (
             <div>
                 <div className="container-addNewArtist">                
-                <div className="container-addNewArtist-child">
-                    <ul>
-                        <li className="artist-filter-active" onClick={this.changeFilter}>All users</li>
-                        <li onClick={this.changeFilter}>New users</li>
-                        <li>
-                            <div className="container-search">
-                                <input
-                                    placeholder="search client"
-                                    id="search-value"
-                                    onChange={this.search}
-                                />
-                            </div>
-                        </li>
-                    </ul>
-
-                    <table className="table-bill-content">
-                    </table>
+                    <div className="container-addNewArtist-child">
+                        <ul>
+                            <li className="artist-filter-active" onClick={this.changeFilter}>All users</li>
+                            <li onClick={this.changeFilter}>New users</li>
+                            <li>
+                                <div className="container-search">
+                                    <input
+                                        placeholder="search client"
+                                        id="search-value"
+                                        onChange={this.search}
+                                    />
+                                </div>
+                            </li>
+                        </ul>
+                        <table className="table-bill-content"></table>
+                    </div>
                 </div>
-            </div>
             </div>
         )
     }
