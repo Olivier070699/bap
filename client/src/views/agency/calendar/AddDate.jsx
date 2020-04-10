@@ -9,6 +9,7 @@ export class AddDate extends Component {
 
   state = {
     calendar: '',
+    dates: []
   }
 
   componentDidMount = () => {
@@ -27,11 +28,13 @@ export class AddDate extends Component {
     
     this.setState({
       calendar,
+      test: 0,
     })
 
     // CLICK EVENTS
     calendar.on({
       'beforeUpdateSchedule': function (e) {
+        console.log(e.schedule.id)
         document.querySelector('.btn-save-date').classList.add('hide')
         document.querySelector('.btn-update-date').classList.remove('hide')
 
@@ -41,6 +44,10 @@ export class AddDate extends Component {
           document.getElementById('event').value = data.event
           document.getElementById('start').value = data.start
           document.getElementById('stop').value = data.stop
+          document.getElementById('street').value = data.street
+          document.getElementById('number').value = data.number
+          document.getElementById('city').value = data.city
+          document.getElementById('country').value = data.country
         })
         document.querySelector('.form-new-date').classList.remove('hide')
       },
@@ -52,6 +59,8 @@ export class AddDate extends Component {
 
     // LOAD ARTIST FORM SELECT
     let agencyKey = localStorage.getItem('agency_key')
+    document.getElementById('artist').innerHTML = ''
+    document.getElementById('artist').innerHTML = '<option disabled selected value> -- select an artist -- </option>'
       firebase.database().ref('artist').on('value', snapshot => {
         snapshot.forEach((childSnapshot) => {
           const data = childSnapshot.val();
@@ -60,30 +69,36 @@ export class AddDate extends Component {
               document.getElementById('artist').insertAdjacentHTML('beforeend', option)
           }
         });
+        console.log('componentdidmount')
+          this.showDate()
       })
-    this.showDate()
   }
 
-  // NEW DATE
   showDate = () => {
+    console.log('showdate')
     firebase.database().ref('events').on('value', snapshot => {
       snapshot.forEach((childSnapshot) => {
-        const data = childSnapshot.val();
+        if(this.state.dates.includes(childSnapshot.key) === false) {
+          this.state.dates.push(childSnapshot.key)
+          const data = childSnapshot.val();
           let calendar = this.state.calendar
-          calendar.createSchedules([
-            {
-              id: `${childSnapshot.key}`,
-              calendarId: '1',
-              title: `artist - ${data.event}`,
-              category: 'time',
-              location: `${data.adres}`,
-              color: 'white',
-              bgColor: 'blue',
-              dueDateClass: '',
-              start: `${data.start}`,
-              end: `${data.stop}`
-            }
-          ])
+          firebase.database().ref(`artist/${data.artist}`).on('value', snap => {
+            calendar.createSchedules([
+              {
+                id: `${childSnapshot.key}`,
+                calendarId: '1',
+                title: `${snap.val().artist_name} - ${data.event}`,
+                category: 'time',
+                location: `${data.adres}`,
+                color: 'white',
+                bgColor: 'blue',
+                dueDateClass: '',
+                start: `${data.start}`,
+                end: `${data.stop}`
+              }
+            ])
+          })
+        }
       });
     })
   }
@@ -100,25 +115,33 @@ export class AddDate extends Component {
     let agency_key = localStorage.getItem('agency_key')
     let adres = `${this.state.street} ${this.state.number}, ${this.state.city} ${this.state.country}`
     firebase.database().ref(`events`).push({
-        artist: this.state.artist,
-        client: '',
-        event: this.state.event,
-        start: this.state.start,
-        stop: this.state.stop,
-        adres: adres,
-        agency_key,
+      artist: this.state.artist,
+      client: '',
+      event: this.state.event,
+      start: this.state.start,
+      stop: this.state.stop,
+      adres: adres,
+      street: this.state.street,
+      number: this.state.number,
+      city: this.state.city,
+      country: this.state.country,
+      agency_key,
+      payment_status: 'Open',
+      paydate: ''
     })
+    console.log('save date')
+    this.showDate()
     document.querySelector('#calendar form').reset() 
   }
 
   updateEvent = (e) => {
     e.preventDefault()
+
   }
 
   // MOVE TO today/prev/next
   prev = (e) => {
     let calendar = this.state.calendar
-    console.log(e.target.value)
     calendar.prev();
   }
 
@@ -194,10 +217,6 @@ export class AddDate extends Component {
                   <option disabled selected value> -- select an artist -- </option>
               </select>
 
-              <select id="client" onChange={this.logChanges} required>
-                  <option disabled selected value> -- select a client -- </option>
-              </select>
-
               <input id="event" onChange={this.logChanges} type="text" placeholder="event name" required/>
               <input id="start" onChange={this.logChanges} type="datetime-local" placeholder="start" required/>
               <input id="stop" onChange={this.logChanges} type="datetime-local" placeholder="stop" required/>
@@ -221,11 +240,10 @@ export default AddDate
 // GIVE EACH ARTIST OTHER COLOR
 // IF FILTER = TRUE, firebase.database().ref(bookings/key) else .ref(bookings)
 
-// calendar.deleteSchedule(schedule.id, schedule.calendarId);
-
 // calendar.updateSchedule(schedule.id, schedule.calendarId, {
 //   start: startTime,
 //   end: endTime
 // });
 
 // add new key in state read it load
+// FORM ON SUBMIT

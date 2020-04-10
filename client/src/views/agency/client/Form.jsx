@@ -23,24 +23,28 @@ export class Form extends Component {
         firebase.database().ref(`events`).on('value', snap => {
             snap.forEach(childsnap => {
                 let data = childsnap.val()
-                let content = `<tr class="content-client"><td>${data.event} - artist</td><td>${data.start}</td><td>open/payed</td><td id="${childsnap.key}" class="download-bill">download bill</td><td>send payment reminder</td></tr>`
+                let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
+                let content = `<tr id="${childsnap.key}" class="content-client"><td>${data.event} - artist</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill">download bill</td><td>send payment reminder</td></tr>`
                 document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)
             });
+            this.renderEventListeners()
         })
-        this.renderEventListeners()
     }
 
     renderEventListeners = () => {
-        setTimeout(() => {
-            let DownloadBillBtns = document.querySelectorAll('.download-bill')
-            DownloadBillBtns.forEach(DownloadBillBtn => {
-            DownloadBillBtn.addEventListener('click', this.getBillInfo)
+        let downloadBillBtns = document.querySelectorAll('.download-bill')
+        downloadBillBtns.forEach(downloadBillBtn => {
+        downloadBillBtn.addEventListener('click', this.getBillInfo)
         });
-        }, 1500);
+        
+        let paymentStatusBtns = document.querySelectorAll('.btn-payment_status')
+        paymentStatusBtns.forEach(paymentStatusBtn => {
+            paymentStatusBtn.addEventListener('click', this.changePaymentStatus)
+        });
     }
 
     getBillInfo = (e) => {
-        let eventID = e.target.id
+        let eventID = e.target.parentNode.id
         this.setState({
             eventID,
         })
@@ -88,6 +92,30 @@ export class Form extends Component {
         doc.save(`${this.state.eventName} - ${this.state.artistName}`)
     
     }
+
+    changePaymentStatus = (e) => {
+        let value = e.target.innerHTML
+        let eventID = e.target.parentNode.id
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+
+        if (value === 'Open') {
+            value = 'Paid'
+            today = dd + '/' + mm + '/' + yyyy;
+        } else if (value === 'Paid') {
+            value = 'Open'
+            today = ''
+        }
+
+        firebase.database().ref(`events/${eventID}`).update({
+            payment_status: value,
+            paydate: today,
+        })
+
+        this.componentDidMount()
+    }
     render() {
         return (
             <div>
@@ -115,3 +143,4 @@ export class Form extends Component {
 }
 
 export default Form
+// PAY DATE
