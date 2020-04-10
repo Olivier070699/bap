@@ -9,7 +9,7 @@ export class AddDate extends Component {
 
   state = {
     calendar: '',
-    dates: []
+    dates: [],
   }
 
   componentDidMount = () => {
@@ -34,13 +34,14 @@ export class AddDate extends Component {
     // CLICK EVENTS
     calendar.on({
       'beforeUpdateSchedule': function (e) {
-        console.log(e.schedule.id)
+        let event_to_update = e.schedule.id
+        localStorage.setItem('event_to_update', event_to_update)
+
         document.querySelector('.btn-save-date').classList.add('hide')
         document.querySelector('.btn-update-date').classList.remove('hide')
 
         firebase.database().ref(`events/${e.schedule.id}`).on('value', snapshot => {
           let data = snapshot.val()
-
           document.getElementById('event').value = data.event
           document.getElementById('start').value = data.start
           document.getElementById('stop').value = data.stop
@@ -136,7 +137,28 @@ export class AddDate extends Component {
 
   updateEvent = (e) => {
     e.preventDefault()
+    let event = document.getElementById('event').value 
+    let start = document.getElementById('start').value 
+    let stop = document.getElementById('stop').value 
+    let street = document.getElementById('street').value 
+    let number = document.getElementById('number').value 
+    let city = document.getElementById('city').value 
+    let country = document.getElementById('country').value 
 
+    firebase.database().ref(`events/${localStorage.getItem('event_to_update')}`).update({
+      event,
+      start,
+      stop,
+      street,
+      number,
+      city,
+      country,
+    })
+
+    this.state.dates.splice(this.state.dates.indexOf(`${localStorage.getItem('event_to_update')}`), 1);
+    let calendar = this.state.calendar
+    calendar.deleteSchedule(localStorage.getItem('event_to_update'), '1');
+    this.showDate()
   }
 
   // MOVE TO today/prev/next
@@ -240,10 +262,5 @@ export default AddDate
 // GIVE EACH ARTIST OTHER COLOR
 // IF FILTER = TRUE, firebase.database().ref(bookings/key) else .ref(bookings)
 
-// calendar.updateSchedule(schedule.id, schedule.calendarId, {
-//   start: startTime,
-//   end: endTime
-// });
-
-// add new key in state read it load
 // FORM ON SUBMIT
+// UPDATE ARTIST NAME

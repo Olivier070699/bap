@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendarAlt,  } from '@fortawesome/free-solid-svg-icons'
 
 // COMPONENTS
-import LogoutBtn from '../../components/Logout'
 import Navigation from '../../components/Navigation'
 import Header from '../../components/Header'
 // var user = firebase.auth().currentUser;
@@ -25,8 +24,7 @@ export class Index extends Component {
         return (
             <div>
                 <div className="header-dashboard">
-                    <Header />
-                    <LogoutBtn/>
+                    <Header/>
                 </div>
                 <div className="container-work-body">
                     <div className="navigation">

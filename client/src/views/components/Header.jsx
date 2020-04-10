@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import firebase from '../../config/firebase'
 import PageTitle from './PageTitle'
+import LogoutBtn from './Logout'
 
 export class Header extends Component {
     
@@ -44,6 +45,7 @@ export class Header extends Component {
             <div>
                 <PageTitle/>
                 <p className="claim"></p>
+                <LogoutBtn/>
             </div>
         )
     }

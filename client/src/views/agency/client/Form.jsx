@@ -23,9 +23,11 @@ export class Form extends Component {
         firebase.database().ref(`events`).on('value', snap => {
             snap.forEach(childsnap => {
                 let data = childsnap.val()
-                let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
-                let content = `<tr id="${childsnap.key}" class="content-client"><td>${data.event} - artist</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill">download bill</td><td>send payment reminder</td></tr>`
-                document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)
+                firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
+                    let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
+                    let content = `<tr id="${childsnap.key}" class="content-client"><td>${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill">download bill</td><td>send payment reminder</td></tr>`
+                    document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
+                })
             });
             this.renderEventListeners()
         })
@@ -84,7 +86,7 @@ export class Form extends Component {
     }
 
     downloadPDF = () => {
-        let doc = new jsPDF('p', 'pt')
+        let doc = new jsPDF('p', 'mm', 'a4')
         // POSITION POSITION TEXT
         let totalPrice = this.state.artistPrice * this.state.bookingsfee
         let text = `Voor uw event (${this.state.eventName} te ${this.state.adres}) had u bij ons (${this.state.agencyName}) DJ ${this.state.artistName} gebookt van ${this.state.start} tot ${this.state.stop}, de prijs hier voor bedraagd €${this.state.artistPrice} + ${this.state.bookingsfee}% bookingsfee, een totaal van €${totalPrice}`
