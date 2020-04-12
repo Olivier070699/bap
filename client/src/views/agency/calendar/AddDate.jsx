@@ -132,7 +132,9 @@ export class AddDate extends Component {
     })
     console.log('save date')
     this.showDate()
-    document.querySelector('#calendar form').reset() 
+    document.querySelector('#calendar form').reset()
+    
+    this.sendMail()
   }
 
   updateEvent = (e) => {
@@ -159,6 +161,23 @@ export class AddDate extends Component {
     let calendar = this.state.calendar
     calendar.deleteSchedule(localStorage.getItem('event_to_update'), '1');
     this.showDate()
+  }
+
+  // SEND MAIL
+  sendMail = () => {
+    console.log('send mail open')
+    const sendmail = require('sendmail')();
+    console.log('add sendmail')
+    sendmail({
+        from: 'no-reply@yourdomain.com',
+        to: 'olivier.decock1@hotmail.com, olivdeco1@student.arteveldehs.be, theemployerz@hotmail.com ',
+        subject: 'test sendmail',
+        html: 'Mail of test sendmail ',
+      }, function(err, reply) {
+        console.log(err && err.stack);
+        console.dir(reply);
+    });
+    console.log('mail sended')
   }
 
   // MOVE TO today/prev/next

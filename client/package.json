@@ -36,6 +36,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "schema-utils": "^2.6.5",
+    "sendmail": "^1.6.1",
     "tui-calendar": "^1.12.12"
   },
   "scripts": {

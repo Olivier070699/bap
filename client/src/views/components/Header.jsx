@@ -45,7 +45,6 @@ export class Header extends Component {
             <div>
                 <PageTitle/>
                 <p className="claim"></p>
-                <LogoutBtn/>
             </div>
         )
     }

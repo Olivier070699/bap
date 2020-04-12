@@ -124,8 +124,8 @@ export class Form extends Component {
                 <div className="container-addNewArtist">                
                     <div className="container-addNewArtist-child">
                         <ul>
-                            <li className="artist-filter-active" onClick={this.changeFilter}>All users</li>
-                            <li onClick={this.changeFilter}>New users</li>
+                            <li className="artist-filter-active" onClick={this.changeFilter}>All events</li>
+                            <li onClick={this.changeFilter}>Open payments</li>
                             <li>
                                 <div className="container-search">
                                     <input
