@@ -204,7 +204,9 @@ export class AddDate extends Component {
   }
 
 
-  sendMail = () => {
+  sendMail = (req, res) => {
+    res.header("Acces-Control-Allow-Origin", "*")
+    res.header("Acces-Control-Allow-Headers")
     const nodemailer = require("nodemailer");
     
     // async..await is not allowed in global scope, must use a wrapper

@@ -25,6 +25,7 @@
     "@testing-library/user-event": "^7.1.2",
     "firebase": "^7.12.0",
     "font-awesome": "^4.7.0",
+    "http-proxy-middleware": "^1.0.3",
     "jspdf": "^1.5.3",
     "jspdf-react": "^1.0.11",
     "material-ui": "^1.0.0-beta.47",
@@ -38,7 +39,8 @@
     "react-scripts": "3.4.1",
     "schema-utils": "^2.6.5",
     "sendmail": "^1.6.1",
-    "tui-calendar": "^1.12.12"
+    "tui-calendar": "^1.12.12",
+    "webpack-cli": "^3.3.11"
   },
   "scripts": {
     "start": "react-scripts start",
