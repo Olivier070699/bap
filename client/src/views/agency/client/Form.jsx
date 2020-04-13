@@ -29,12 +29,13 @@ export class Form extends Component {
                     document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
                 })
             });
-            this.renderEventListeners()
         })
+        this.renderEventListeners()
     }
 
     renderEventListeners = () => {
         let downloadBillBtns = document.querySelectorAll('.download-bill')
+        console.log(downloadBillBtns)
         downloadBillBtns.forEach(downloadBillBtn => {
         downloadBillBtn.addEventListener('click', this.getBillInfo)
         });
@@ -46,6 +47,7 @@ export class Form extends Component {
     }
 
     getBillInfo = (e) => {
+        console.log('active')
         let eventID = e.target.parentNode.id
         this.setState({
             eventID,
@@ -146,3 +148,4 @@ export class Form extends Component {
 
 export default Form
 // PAY DATE
+// RENDER EVENT LISTENERS
