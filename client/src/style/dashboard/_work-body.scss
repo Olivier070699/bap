@@ -33,6 +33,93 @@
         width: 100%;
         background-color: $white;
         border-radius: 25px;
+        position: relative;
+
+        .icon-add-todo{
+            font-size: 25px;
+            color: $black;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            transition: ease 0.2s;
+        }
+
+        .icon-add-todo:hover{
+            cursor: pointer;
+            transform: scale(0.9);
+        }
+
+        .icon-trash-todo{
+            font-size: 25px;
+            color: $black;
+            position: absolute;
+            top: 15px;
+            right: 46px;
+            transition: ease 0.2s;
+        }
+
+        .icon-trash-todo:hover{
+            cursor: pointer;
+            transform: scale(0.9);
+        }
+
+        form{
+            position: absolute;
+            top: 0;   
+            bottom: 0;   
+            left: 0;   
+            right: 0;   
+            background-color: $white;
+            border-radius: 25px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            .icon-close-todo{
+                font-size: 25px;
+                color: $black;
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                transition: ease 0.2s;
+            }
+
+            .icon-close-todo:hover,{
+                cursor: pointer;
+                transform: scale(0.9);
+            }
+
+            div{
+                width: 100%;
+
+                input{
+                    width: 90%;
+                    padding: 14px;
+                    margin: 10px 5%;
+                    border: solid 1px $border;
+                    border-radius: 5px;
+                    font-family: 'light';
+                    box-sizing: border-box;
+                }
+    
+                button{
+                    border: none;
+                    background-color: $green;
+                    color: white;
+                    border-radius: 5px;
+                    padding: 14px 44px;
+                    transition: ease 0.2s;
+                    font-family: 'regular';
+                    justify-content: center;
+                }
+                
+                button:hover{
+                    transform: scale(0.9);
+                    cursor: pointer;
+                }
+            }
+        }
         
 
         h2{
