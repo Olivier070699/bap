@@ -18,19 +18,45 @@ export class Form extends Component {
     }
     
     componentDidMount = () => {
+        this.loadAll()
+    }
+
+    loadAll = () => {
+        document.querySelector('.table-bill-content').innerHTML = '';
+        document.querySelector('.table-bill-content').innerHTML = '<tr><th>Event</th><th>Date</th><th>Payment status</th><th></th><th></th></tr>'
+        firebase.database().ref(`events`).on('value', snap => {
+            snap.forEach(childsnap => {
+                let data = childsnap.val()
+                firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
+                    let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
+                    let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill">download bill</td><td>send payment reminder</td></tr>`
+                    document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
+                })
+            });
+        })
+        setTimeout(() => {
+            this.renderEventListeners()
+        }, 1500);
+    }
+
+    loadOpenPayments = () => {
         document.querySelector('.table-bill-content').innerHTML = '';
         document.querySelector('.table-bill-content').innerHTML = '<tr><th class="filter-sort">Event</th><th class="filter-sort">Date</th><th>Payment status</th><th></th><th></th></tr>'
         firebase.database().ref(`events`).on('value', snap => {
             snap.forEach(childsnap => {
                 let data = childsnap.val()
                 firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
-                    let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
-                    let content = `<tr id="${childsnap.key}" class="content-client"><td>${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill">download bill</td><td>send payment reminder</td></tr>`
-                    document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
+                    if (data.payment_status === 'Open') {
+                        let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
+                        let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill">download bill</td><td>send payment reminder</td></tr>`
+                        document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
+                    }
                 })
             });
         })
-        this.renderEventListeners()
+        setTimeout(() => {
+            this.renderEventListeners()
+        }, 1500);
     }
 
     renderEventListeners = () => {
@@ -118,8 +144,35 @@ export class Form extends Component {
             paydate: today,
         })
 
-        this.componentDidMount()
+        this.loadAll()
     }
+
+    search = (e) => {
+        let value = e.target.value.toLowerCase()
+        let names = document.querySelectorAll('.event-name')
+        names.forEach(name => {
+            let tr_namevalue = name.innerHTML.toLowerCase()
+            if (!tr_namevalue.includes(value)) {
+                // SEARCH
+                name.parentNode.classList.add('hide')
+            } else {
+                name.parentNode.classList.remove('hide')
+            }
+        });
+    }
+
+    changeFilter = (e) => {
+        console.log(e.target.innerHTML)
+        document.querySelector('.artist-filter-active').classList.remove('artist-filter-active')
+        e.target.classList.add('artist-filter-active')
+
+        if (e.target.innerHTML === 'All events') {
+            this.loadAll()
+        } else {
+            this.loadOpenPayments()
+        }
+    }
+
     render() {
         return (
             <div>
@@ -147,5 +200,9 @@ export class Form extends Component {
 }
 
 export default Form
+
 // PAY DATE
 // RENDER EVENT LISTENERS
+// SET TIME OUT MOET WEG!!!
+
+// PAYMENT STATUS BY SEARCH OF OPEN PAYMENTS  IS FOKT 
