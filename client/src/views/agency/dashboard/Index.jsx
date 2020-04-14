@@ -7,16 +7,8 @@ import { faCalendarAlt,  } from '@fortawesome/free-solid-svg-icons'
 // COMPONENTS
 import Navigation from '../../components/Navigation'
 import Header from '../../components/Header'
-// var user = firebase.auth().currentUser;
-// var name, email, photoUrl, uid, emailVerified;
-
-// if (user != null) {
-//   name = user.displayName;
-//   email = user.email;
-//   photoUrl = user.photoURL;
-//   emailVerified = user.emailVerified;
-//   uid = user.uid; 
-// }
+import Clock from './components/Clock'
+import Todo from './components/Todo'
 
 export class Index extends Component {
 
@@ -32,6 +24,13 @@ export class Index extends Component {
                         <div className="navigation-child"></div>
                     </div>
                     <div className="work-body">
+                        <div className="container-dashboard-work-body">
+                            <section className="container-dashboard-left"></section>
+                            <section className="container-dashboard-right">
+                                <Clock />
+                                <Todo/>
+                            </section>
+                        </div>
                     </div>
                 </div>
             </div>

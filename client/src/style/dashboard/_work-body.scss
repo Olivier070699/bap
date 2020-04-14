@@ -1,0 +1,78 @@
+.container-dashboard-work-body{
+    width: calc(90% - 120px);
+    margin: 75px 0 0 120px;
+    display: flex;
+
+    .container-dashboard-left{
+        width: 70%;
+        height: calc(160px + 300px + 50px);
+        background-color: $white;
+        border-radius: 25px;
+        margin-right: 5%;
+    }
+
+    .container-dashboard-right{
+        width: 25%;
+    }
+    .container-clock{
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'bold';
+        font-size: $h2;
+        color: $blue;
+        width: 100%;
+        background-color: $white;
+        border-radius: 25px;
+    }
+
+    .container-todo{
+        height: 300px; //MOET NOG AANPASSEN - CALC(100% - clock)
+        margin-top: 50px;
+        width: 100%;
+        background-color: $white;
+        border-radius: 25px;
+        
+
+        h2{
+            padding: 20px 0 0px 0;
+            margin: 0 0 -8px calc(5% + 13px);
+            font-family: 'bold';
+            color: $blue;
+        }
+
+        :nth-child(2){
+            height: 80%;
+            width: 90%;
+            display: flex;
+            margin: 10px auto 0 auto;
+            align-items: center;
+            overflow: auto;
+            flex-wrap: wrap;
+            text-align: center;
+
+            .task{
+                width: 100%;
+                height: auto;
+                padding: 15px 0;
+                background-image: linear-gradient(to bottom left, #FAFAFC, #F3F3F5);
+                margin: 10px 0;
+                border-radius: 15px;
+                text-align: center;
+                font-family: 'light';
+                color: $black;
+                display: block;
+            }
+
+            .task:first-child{
+                margin: 0 0 10px 0;
+            }
+
+            .task-done{
+                opacity: 0.5;
+                text-decoration: line-through 
+            }
+        }
+    }
+}
