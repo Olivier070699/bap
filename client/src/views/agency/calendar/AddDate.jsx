@@ -4,6 +4,8 @@ import Calendar from 'tui-calendar'
 import "tui-calendar/dist/tui-calendar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 export class AddDate extends Component {
 
@@ -51,10 +53,12 @@ export class AddDate extends Component {
           document.getElementById('country').value = data.country
         })
         document.querySelector('.form-new-date').classList.remove('hide')
+        document.querySelector('.form-new-date').classList.add('update')
       },
-      'beforeDeleteSchedule': function(e) {
-          firebase.database().ref(`events/${e.schedule.id}`).remove()
-          calendar.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+      'beforeDeleteSchedule': function (e) {
+        firebase.database().ref(`events/${e.schedule.id}`).remove()
+        calendar.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+        NotificationManager.success('Date is deleted succesfully.', 'Succeeded!');
       }
     });
 
@@ -62,24 +66,25 @@ export class AddDate extends Component {
     let agencyKey = localStorage.getItem('agency_key')
     document.getElementById('artist').innerHTML = ''
     document.getElementById('artist').innerHTML = '<option disabled selected value> -- select an artist -- </option>'
-      firebase.database().ref('artist').on('value', snapshot => {
-        snapshot.forEach((childSnapshot) => {
-          const data = childSnapshot.val();
-          if (agencyKey === data.agency_key) {
-              let option = `<option value="${childSnapshot.key}">${data.artist_name}</option>`
-              document.getElementById('artist').insertAdjacentHTML('beforeend', option)
-          }
-        });
-        console.log('componentdidmount')
-          this.showDate()
-      })
+    firebase.database().ref('artist').on('value', snapshot => {
+      snapshot.forEach((childSnapshot) => {
+        const data = childSnapshot.val();
+        if (agencyKey === data.agency_key) {
+          let option = `<option value="${childSnapshot.key}">${data.artist_name}</option>`
+          document.getElementById('artist').insertAdjacentHTML('beforeend', option)
+        }
+      });
+      console.log('componentdidmount')
+      this.showDate()
+    })
   }
 
   showDate = () => {
+    let agencyKey = localStorage.getItem('agency_key')
     console.log('showdate')
     firebase.database().ref('events').on('value', snapshot => {
       snapshot.forEach((childSnapshot) => {
-        if(this.state.dates.includes(childSnapshot.key) === false) {
+        if (this.state.dates.includes(childSnapshot.key) === false && childSnapshot.val().agency_key === agencyKey) {
           this.state.dates.push(childSnapshot.key)
           const data = childSnapshot.val();
           let calendar = this.state.calendar
@@ -92,7 +97,7 @@ export class AddDate extends Component {
                 category: 'time',
                 location: `${data.adres}`,
                 color: 'white',
-                bgColor: 'blue',
+                bgColor: snap.val().color,
                 dueDateClass: '',
                 start: `${data.start}`,
                 end: `${data.stop}`
@@ -107,12 +112,23 @@ export class AddDate extends Component {
   // FORM
   logChanges = (e) => {
     this.setState({
-        [e.target.id]: e.target.value,
+      [e.target.id]: e.target.value,
     })
   }
 
-  saveDate = (e) => {
+  submitForm = (e) => {
     e.preventDefault()
+    let targetClasses = e.target.classList
+    if (targetClasses.contains('new')) {
+      e.target.classList.remove('new')
+      this.saveDate()
+    } else {
+      e.target.classList.remove('update')
+      this.updateEvent()
+    }
+  }
+
+  saveDate = (e) => {
     let agency_key = localStorage.getItem('agency_key')
     let adres = `${this.state.street} ${this.state.number}, ${this.state.city} ${this.state.country}`
     firebase.database().ref(`events`).push({
@@ -133,10 +149,10 @@ export class AddDate extends Component {
     console.log('save date')
     this.showDate()
     document.querySelector('#calendar form').reset()
+    NotificationManager.success('New date is added succesfully.', 'Succeeded!');
     }
 
   updateEvent = (e) => {
-    e.preventDefault()
     let event = document.getElementById('event').value 
     let start = document.getElementById('start').value 
     let stop = document.getElementById('stop').value 
@@ -158,6 +174,7 @@ export class AddDate extends Component {
     this.state.dates.splice(this.state.dates.indexOf(`${localStorage.getItem('event_to_update')}`), 1);
     let calendar = this.state.calendar
     calendar.deleteSchedule(localStorage.getItem('event_to_update'), '1');
+    NotificationManager.success('Date is updatet succesfully.', 'Succeeded!');
     this.showDate()
   }
 
@@ -170,8 +187,6 @@ export class AddDate extends Component {
   today = () => {
     let calendar = this.state.calendar
     calendar.today();
-
-    this.sendMail()
   }
 
   next = () => {
@@ -188,6 +203,7 @@ export class AddDate extends Component {
   // OPEN NEW DATE
   newDate = () => {
     document.querySelector('.form-new-date').classList.remove('hide')
+    document.querySelector('.form-new-date').classList.add('new')
     document.querySelector('.btn-save-date').classList.remove('hide')
     document.querySelector('.btn-update-date').classList.add('hide')
   }
@@ -201,11 +217,6 @@ export class AddDate extends Component {
       start: '',
       stop: '',
     })
-  }
-
-
-  sendMail = () => {
-    
   }
   render() {
     return (
@@ -235,7 +246,7 @@ export class AddDate extends Component {
         </div>
 
         <div id="calendar">
-          <form className="form-new-date hide">
+          <form className="form-new-date hide" onSubmit={this.submitForm}>
           <FontAwesomeIcon
                 icon={faTimesCircle}
                 className="form-new-date-close"
@@ -254,10 +265,11 @@ export class AddDate extends Component {
                   <input id="city" onChange={this.logChanges} type="text" placeholder="city" required/>
                   <input id="country" onChange={this.logChanges} type="text" placeholder="country" required/>
               </div>
-              <button className="btn-save-date" onClick={this.saveDate}>save</button>
-              <button className="btn-update-date hide" onClick={this.updateEvent}>update</button>
+              <button className="btn-save-date">save</button>
+              <button className="btn-update-date hide">update</button>
             </form>
         </div>
+        <NotificationContainer/>
       </div>
     )
   }
@@ -265,8 +277,7 @@ export class AddDate extends Component {
 
 export default AddDate
 
-// GIVE EACH ARTIST OTHER COLOR
-// IF FILTER = TRUE, firebase.database().ref(bookings/key) else .ref(bookings)
-
 // FORM ON SUBMIT
 // UPDATE ARTIST NAME
+
+// BIJ HET OPENEN UPDATE/NEW MEE GEVEN, ONSUBMIT VERWIJZEN NAAR DE JUISTE FUNCTIE OP HET EINDE UPDATE/NEW VERWIJDEREN

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faTimesCircle, faTrash } from '@fortawesome/free-solid-svg-icons'
 import firebase from '../../../../config/firebase'
-
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 export class Todo extends Component {
 
@@ -83,6 +84,9 @@ export class Todo extends Component {
             task: this.state.task,
             inprocess: 'true',
         })
+        .then(() => {
+            NotificationManager.success('Task is successfully added.', 'Succeeded!');
+        })
         document.querySelector('.form-todo').reset()
     }
 
@@ -117,6 +121,7 @@ export class Todo extends Component {
                         />
                     </div>
                 </form>
+                <NotificationContainer/>
             </div>
         )
     }

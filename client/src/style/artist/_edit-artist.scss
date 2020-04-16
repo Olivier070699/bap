@@ -53,6 +53,17 @@
         border-radius: 5px;
         font-family: 'light';
     }
+
+    #color{
+        padding: 0;
+        margin: 0 0 0 5%;
+        width: 45%;
+        box-sizing: border-box;
+        height: 50px;
+        position: relative;
+        top: 17px;
+        border: none;
+    }
 }
 
 .container-edit-artist-right{

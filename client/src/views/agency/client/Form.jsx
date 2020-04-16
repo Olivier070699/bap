@@ -22,16 +22,19 @@ export class Form extends Component {
     }
 
     loadAll = () => {
+        let agencyKey = localStorage.getItem('agency_key')
         document.querySelector('.table-bill-content').innerHTML = '';
         document.querySelector('.table-bill-content').innerHTML = '<tr><th>Event</th><th>Date</th><th>Payment status</th><th></th><th></th></tr>'
         firebase.database().ref(`events`).on('value', snap => {
             snap.forEach(childsnap => {
                 let data = childsnap.val()
-                firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
-                    let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
-                    let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill">download bill</td><td>send payment reminder</td></tr>`
-                    document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
-                })
+                if (agencyKey === data.agency_key) {
+                    firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
+                        let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
+                        let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td>send payment reminder</td></tr>`
+                        document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
+                    })
+                }
             });
         })
         setTimeout(() => {
@@ -40,18 +43,21 @@ export class Form extends Component {
     }
 
     loadOpenPayments = () => {
+        let agencyKey = localStorage.getItem('agency_key')
         document.querySelector('.table-bill-content').innerHTML = '';
         document.querySelector('.table-bill-content').innerHTML = '<tr><th class="filter-sort">Event</th><th class="filter-sort">Date</th><th>Payment status</th><th></th><th></th></tr>'
         firebase.database().ref(`events`).on('value', snap => {
             snap.forEach(childsnap => {
                 let data = childsnap.val()
-                firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
-                    if (data.payment_status === 'Open') {
-                        let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
-                        let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill">download bill</td><td>send payment reminder</td></tr>`
-                        document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
-                    }
-                })
+                if (agencyKey === data.agency_key) {
+                    firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
+                        if (data.payment_status === 'Open') {
+                            let datum = data.start.substring(0, data.start.indexOf("T"));
+                            let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td>send payment reminder</td></tr>`
+                            document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)
+                        }
+                    })
+                }
             });
         })
         setTimeout(() => {

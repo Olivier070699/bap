@@ -21,7 +21,9 @@
 
 .container-artist-image{
     height: 250px;
-    background-color: $red;
+    background-image: url('/images/placeholder-background.png');
+    background-size: 100% 100%;
+    background-position: bottom;
     width: 100%;
     border-radius: 25px;
 
@@ -65,3 +67,5 @@
 .artist-amountOfShows span{
     font-family: 'bold';
 }
+
+// PLACEHOLDER POSITION AANPASSEN

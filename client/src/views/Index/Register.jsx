@@ -62,6 +62,7 @@ export class Register extends Component {
         e.preventDefault()
         // ID = firebase.key
         // FIST CREATE USER (email, password)
+        let user_id
         const auth = firebase.auth()
         const promise = auth.createUserWithEmailAndPassword(this.state.email, this.state.password);
         promise
@@ -69,6 +70,7 @@ export class Register extends Component {
                 this.setState({
                     user_id: result.user.uid
                 })
+                user_id =  result.user.uid
                 return result.user.updateProfile({
                     displayName: this.state.name,
                 })
@@ -88,7 +90,7 @@ export class Register extends Component {
             country: this.state.country,
             tel: this.state.tel,
             type: this.state.type,
-            id: this.state.user_id,
+            id: user_id,
         })
             .then((result) => {
                 // THIRD REGISTER TYPE

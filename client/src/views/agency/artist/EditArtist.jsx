@@ -16,6 +16,8 @@ export class EditArtist extends Component {
     componentDidMount = () => {
         let agencyKey = localStorage.getItem('agency_key')
         firebase.database().ref('artist').on('value', snapshot => {
+            document.getElementById('artist_name').innerHTML = ''
+            document.getElementById('artist_name').insertAdjacentHTML('beforeend', '<option disabled selected value> -- select an artist -- </option>')
             snapshot.forEach((childSnapshot) => {
                 const data = childSnapshot.val();
                 if (agencyKey === data.agency_key) {
@@ -42,6 +44,9 @@ export class EditArtist extends Component {
             let data = snapshot.val()
             document.getElementById('bio').value = data.bio
             document.getElementById('price').value = data.price
+            if (data.color) {
+                document.getElementById('color').value = data.color
+            }
         })
     }
 
@@ -66,10 +71,12 @@ export class EditArtist extends Component {
         let key = this.state.artistKey
         let bio = document.getElementById('bio').value
         let price = document.getElementById('price').value
+        let color = document.getElementById('color').value
         
         firebase.database().ref(`artist/${key}`).update({
             price,
             bio,
+            color
         })
         .then(() => { 
             NotificationManager.success('Update is successfully done.', 'Succeeded!');
@@ -87,9 +94,10 @@ export class EditArtist extends Component {
                     <form>
                         <div className="form-edit-artist-child">
                             <div className="container-edit-artist-left">
-                                <select id="artist_name" onChange={this.logArtistChange}><option disabled selected value> -- select an artist -- </option></select>
+                                <select id="artist_name" onChange={this.logArtistChange}></select>
                                 <textarea id="bio" placeholder="bio"></textarea>
-                                <input id="price" type="number" placeholder="price"/>
+                                <input id="price" type="number" placeholder="price" />
+                                <input id="color" type="color" placeholder="color"/>
                             </div>
                             <div className="container-edit-artist-right">
                                 <input type="file" id="artist_image" onChange={this.logPictureChanges}/>

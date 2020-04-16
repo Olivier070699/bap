@@ -59,7 +59,6 @@ export class Index extends Component {
                 <div className="container-work-body">
                     <div className="navigation">
                         <Navigation />
-                        <div className="navigation-child"></div>
                     </div>
                     <div className="work-body">
                         
