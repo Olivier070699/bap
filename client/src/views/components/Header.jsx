@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import firebase from '../../config/firebase'
 import PageTitle from './PageTitle'
-import LogoutBtn from './Logout'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSortDown } from '@fortawesome/free-solid-svg-icons'
 
 export class Header extends Component {
     
     state = {
         email: '',
         name: '',
+        statusMenu: 'hide',
     }
 
     componentDidMount = () => {
@@ -39,12 +41,48 @@ export class Header extends Component {
             });
         });
     }
+
+    logout = () => {
+        firebase.auth().signOut()
+        .then((response) => {
+            console.log(response)
+            window.location.href = '/'
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+    }
+
+    toggleMenu = () => {
+        if (this.state.statusMenu === 'hide') {
+            this.setState({
+                statusMenu: ''
+            })
+            document.querySelector('.dropdown-menu ul').classList.remove('hide')
+        } else {
+            this.setState({
+                statusMenu: 'hide'
+            })
+            document.querySelector('.dropdown-menu ul').classList.add('hide')
+        }
+    }
     
     render() {
         return (
             <div>
                 <PageTitle/>
-                <p className="claim"></p>
+                <div className="dropdown-menu">
+                    <p className="claim"></p>
+                    <FontAwesomeIcon
+                    icon={faSortDown}
+                    className="icon-dropdown"
+                    onClick={this.toggleMenu}
+                />
+                    <ul className="hide">
+                        <li>Privacy Policy</li>
+                        <li onClick={this.logout}>Logout</li>
+                    </ul>
+                </div>
             </div>
         )
     }
