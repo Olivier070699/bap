@@ -9,6 +9,7 @@ import Navigation from '../../components/Navigation'
 import Header from '../../components/Header'
 import Clock from './components/Clock'
 import Todo from './components/Todo'
+import Preloader from '../../components/Preloader'
 
 export class Index extends Component {
 

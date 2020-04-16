@@ -120,11 +120,21 @@ export class Form extends Component {
     }
 
     downloadPDF = () => {
-        let doc = new jsPDF('p', 'mm', 'a4')
+        let doc = new jsPDF('a4')
         // POSITION POSITION TEXT
-        let totalPrice = this.state.artistPrice * this.state.bookingsfee
-        let text = `Voor uw event (${this.state.eventName} te ${this.state.adres}) had u bij ons (${this.state.agencyName}) DJ ${this.state.artistName} gebookt van ${this.state.start} tot ${this.state.stop}, de prijs hier voor bedraagd €${this.state.artistPrice} + ${this.state.bookingsfee}% bookingsfee, een totaal van €${totalPrice}`
-        doc.text(20, 20, text)
+        let totalPrice = this.state.artistPrice +  (this.state.bookingsfee/100*this.state.artistPrice)
+        doc.setFontSize(16);
+        doc.text(`event: ${this.state.eventName}`, 20, 30);
+        doc.text(`artist: ${this.state.artistName}`, 20, 40);
+        doc.text(`hours: ${this.state.start} - ${this.state.stop}`, 20, 50);
+        doc.text(`adres: ${this.state.adres}`, 20, 60)
+
+        doc.setFontSize(12);
+        doc.text(`artistprice: €${this.state.artistPrice}`, 20, 70);
+        doc.text(`bookingsfee: ${this.state.bookingsfee}%`, 20, 75);
+        doc.setFontSize(16);
+        doc.text(`to pay: €${totalPrice}`, 20, 80);
+
         doc.save(`${this.state.eventName} - ${this.state.artistName}`)
     
     }

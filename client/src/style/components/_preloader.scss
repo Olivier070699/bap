@@ -1,0 +1,41 @@
+.container-load{
+    height: 87.5vh;
+    width: 100%;
+    background-image: linear-gradient(to bottom left, #FAFAFC, #F3F3F5);
+    border-top-left-radius: 110px;
+    position: relative;
+}
+
+.load{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:100px;
+    height:100px;
+}
+.load hr{
+    border:0;
+    margin:0;
+    width:40%;
+    height:40%;
+    position:absolute;
+    border-radius:50%;
+    animation:spin 2s ease infinite
+}
+
+.load :first-child{
+    background:#002afb;
+    animation-delay:-1.5s
+}
+.load :nth-child(3){
+    background:#002afb;
+    animation-delay:-0.5s
+}
+
+@keyframes spin{
+  0%,100%{transform:translate(0)}
+  25%{transform:translate(160%)}
+  50%{transform:translate(160%, 160%)}
+  75%{transform:translate(0, 160%)}
+}
