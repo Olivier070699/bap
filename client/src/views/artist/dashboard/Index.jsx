@@ -6,6 +6,7 @@ import List from './List'
 // COMPONENTS
 import Navigation from '../../components/Navigation_artist'
 import Header from '../../components/Header'
+import Notifications from '../components/Notifications'
 
 export class Index extends Component {
 
@@ -34,6 +35,7 @@ export class Index extends Component {
                         <Navigation />
                     </div>
                     <div className="work-body">
+                        <Notifications/>
                         <List/>
                     </div>
                 </div>

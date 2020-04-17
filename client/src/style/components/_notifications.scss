@@ -1,0 +1,47 @@
+.container-notifications-icon{
+    background-color: $white;
+    color: $black;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.amount-of-notifications{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+}
+
+.notification-icon{
+    font-size: 25px;
+    margin: 40px 20px;
+
+    :hover{
+        cursor: pointer;
+    }
+}
+
+.container-notifications-content{
+    background-color: $white;
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translate(0, -50%);
+    border-radius: 25px;
+
+    li{
+        list-style-type: none;
+        margin: 10px;
+    }
+}

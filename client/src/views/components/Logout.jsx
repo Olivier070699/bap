@@ -25,10 +25,13 @@ export class Logout extends Component {
     }
 
     logout() {
+        localStorage.removeItem('agency_key')
+        localStorage.removeItem('artist_db_key')
+        localStorage.removeItem('uid')
+        localStorage.removeItem('artist_key')
         firebase.auth().signOut()
             .then((response) => {
                 console.log(response)
-                window.localStorage.clear()
                 window.location.href = '/'
             })
             .catch((error) => {

@@ -5,6 +5,11 @@ import 'react-notifications/lib/notifications.css';
 
 export class Form extends Component {
     
+    state = {
+        email: '',
+        password: '',
+    }
+    
     componentDidMount = () => {
         let uid = localStorage.getItem('uid')
         let uid_db = localStorage.getItem('artist_db_key')
@@ -20,6 +25,13 @@ export class Form extends Component {
             const data = snap.val()
             document.getElementById('adres').value = data.adres
             document.getElementById('tel').value = data.tel
+            document.getElementById('email').value = data.email
+        })
+    }
+
+    logChanges = (e) => {
+        this.setState({
+            [e.target.id]: e.target.value
         })
     }
 
@@ -36,9 +48,10 @@ export class Form extends Component {
 
         firebase.database().ref(`artist/${uid_db}`).update({
             adres: document.getElementById('adres').value,
-            tel: document.getElementById('tel').value
+            tel: document.getElementById('tel').value,
+            email: document.getElementById('email').value,
         })
-        .then(() => {
+        .then(() => {    
             NotificationManager.success('Update is successfully done.', 'Succeeded!');
         })
     }
@@ -67,7 +80,6 @@ export class Form extends Component {
 
 export default Form
 
-// BACK TO LOGIN AFTER CHANGE PASSWORD ISN'T RIGHT
 // NotificationManager.info('Info message');
 // NotificationManager.success('Success message', 'Title here');
 // NotificationManager.error('Success message', 'Title here');
