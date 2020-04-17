@@ -5,7 +5,7 @@
     form{
         width: 65%;
 
-        input, select{
+        input, select, textarea{
             width: 100%;
             padding: 14px;
             margin: 10px 0;
@@ -13,6 +13,10 @@
             border-radius: 5px;
             font-family: 'light';
             box-sizing: border-box;
+        }
+
+        textarea{
+            height: 200px;
         }
 
         div{
@@ -39,6 +43,7 @@
             padding: 14px 44px;
             transition: ease 0.2s;
             font-family: 'regular';
+            margin: 0 0 10px 0;
         }
         
         button:hover{
