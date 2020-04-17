@@ -28,6 +28,7 @@ export class Logout extends Component {
         firebase.auth().signOut()
             .then((response) => {
                 console.log(response)
+                window.localStorage.clear()
                 window.location.href = '/'
             })
             .catch((error) => {

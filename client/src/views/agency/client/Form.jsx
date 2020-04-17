@@ -28,7 +28,7 @@ export class Form extends Component {
         firebase.database().ref(`events`).on('value', snap => {
             snap.forEach(childsnap => {
                 let data = childsnap.val()
-                if (agencyKey === data.agency_key) {
+                if (agencyKey === data.agency_key && data.payment_status !== "") {
                     firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
                         let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
                         let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td>send payment reminder</td></tr>`
@@ -49,7 +49,7 @@ export class Form extends Component {
         firebase.database().ref(`events`).on('value', snap => {
             snap.forEach(childsnap => {
                 let data = childsnap.val()
-                if (agencyKey === data.agency_key) {
+                if (agencyKey === data.agency_key  && data.payment_status !== "") {
                     firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
                         if (data.payment_status === 'Open') {
                             let datum = data.start.substring(0, data.start.indexOf("T"));

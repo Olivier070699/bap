@@ -8,6 +8,7 @@ export class PageTitle extends Component {
 
     componentDidMount() {
         let location = window.location.pathname.replace('-agency', '')
+        location = location.replace('-artist', '')
         let name = location.replace('/', '')
         this.setState({
             name: name

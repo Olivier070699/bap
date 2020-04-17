@@ -20,6 +20,7 @@ import PDF from './views/agency/client/Pdf'
 
 // ARTIST
 import DashboardArtistView from './views/artist/dashboard/Index'
+import CalendarArtistView from './views/artist/calendar/Index'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
 
         {/* ROUTES ARTIST */}
         <Route path="/dashboard-artist" component={DashboardArtistView} exact />
+        <Route path="/calendar-artist" component={CalendarArtistView} exact />
 
       </Switch>
     </Router>
