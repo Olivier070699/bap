@@ -98,3 +98,69 @@
         z-index: 1;
     }
 }
+
+@media only screen and (max-width: 800px){ 
+    .container-edit-artist-child{
+        width: calc(90% - 120px);
+        margin: 75px 0 0 120px;
+        display: flex;
+    
+        button{
+            width: 100%;
+            margin: 10px 0;
+        }
+    }
+    
+    .form-edit-artist-child{
+        display: flex;
+        position: relative;
+        flex-wrap: wrap;
+    }
+    
+    .container-edit-artist-left{
+        width: 100%;
+
+    
+        :nth-child(3){
+            width: 100%;
+        }
+    
+        #color{
+            padding: 0;
+            width: 100%;
+            margin: -7px 0 27px 0;
+        }
+    }
+    
+    .container-edit-artist-right{
+        width: 100%;
+        margin: 10px 0;
+        position: static;
+
+        input{
+            position: static;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
+        p{
+            position: static;
+            top: 0%;
+            left: 0%;
+            transform: translate(0%, 0%);
+            margin: -20vh 0 0 0;
+            text-align: center;
+        }
+    }
+}
+
+@media only screen and (max-width: 650px) and (orientation: portrait){
+    .container-edit-artist-child{
+        width: 95%;
+        margin: 75px auto 0 auto;
+    }
+}

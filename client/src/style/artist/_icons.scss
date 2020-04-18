@@ -19,6 +19,7 @@
     display: inline-block;
     right: 50px;
     bottom: 50px;
+    z-index: 4;
   }
   
   .tooltip-add-artist .tooltiptext-left {
@@ -49,3 +50,10 @@
   .tooltip-add-artist:hover .tooltiptext-left {
     visibility: visible;
   }
+
+  @media only screen and (max-width: 800px){ 
+  .tooltip-add-artist {
+      right: 10px;
+      bottom: 50px;
+    }
+}

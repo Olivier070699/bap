@@ -101,7 +101,7 @@ export class EditArtist extends Component {
                             </div>
                             <div className="container-edit-artist-right">
                                 <input type="file" id="artist_image" onChange={this.logPictureChanges}/>
-                                <p>drop image here</p>
+                                <p>select image here</p>
                             </div>
                         </div>
                         <button onClick={this.updateArtist}>save</button>
