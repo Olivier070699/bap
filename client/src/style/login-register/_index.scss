@@ -119,7 +119,7 @@
     width: 50%;
 }
 
-@media only screen and (max-width: 800px) and (orientation: portrait){
+@media only screen and (max-width: 800px){
     .container-login{
         display: flex;
         min-height: 100vh;
@@ -150,7 +150,7 @@
     }
   }
 
-  @media only screen and (max-width: 650px) and (orientation: portrait){
+  @media only screen and (max-width: 650px){
     .container-login{
         display: flex;
         min-height: 100vh;

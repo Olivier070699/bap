@@ -123,3 +123,58 @@
         }
     }  
 }
+
+
+@media only screen and (max-width: 800px){
+    .container-add-new-date{
+        width: calc(90% - 120px);
+        margin: 75px 0 0 120px;
+        display: flex;
+        flex-wrap: wrap;
+    
+        .container-calendar-navigation{
+            width: 100%;
+            margin-right: 0;
+            display: flex;
+            flex-wrap: wrap;
+
+            div{
+                margin: 10px auto;
+            }
+    
+            .navigation-component{
+                font-size: 15px;
+                width: 15px;
+                height: 15px;
+                border-radius: 50%;
+                color: $black;
+                background-color: white;
+                padding: 10px;
+                transition: ease 0.2s;
+                margin: 0 10px;
+            }
+        }
+    
+        #calendar{
+            width: 100%;
+            position: relative;
+    
+            form{
+                width: 65%;
+            }
+        }  
+    }
+}
+
+@media only screen and (max-width: 650px){
+    .container-add-new-date{
+        width: 95%;
+        margin: 75px auto 0 auto;
+
+        #calendar{
+            form{
+                width: 80%;
+            }
+        }
+    }
+}

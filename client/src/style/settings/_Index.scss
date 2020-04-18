@@ -52,3 +52,20 @@
         }
     }
 }
+
+@media only screen and (max-width: 800px){ 
+    .container-settings form{
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 650px){
+    .container-settings {
+        width: 95%;
+        margin: 75px auto 0 auto;
+    }
+
+    .container-settings form{
+        width: 100%;
+    }
+}
