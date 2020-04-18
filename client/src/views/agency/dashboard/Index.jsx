@@ -10,12 +10,14 @@ import Header from '../../components/Header'
 import Clock from './components/Clock'
 import Todo from './components/Todo'
 import Preloader from '../../components/Preloader'
+import MobileNav from '../../components/Navigation_mobile'
 
 export class Index extends Component {
 
     render() {
         return (
             <div>
+                <MobileNav/>
                 <div className="header-dashboard">
                     <Header/>
                 </div>
