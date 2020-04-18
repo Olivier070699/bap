@@ -1,6 +1,6 @@
 .container-login{
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 // LEFT
@@ -118,3 +118,72 @@
     font-family: 'light';
     width: 50%;
 }
+
+@media only screen and (max-width: 800px) and (orientation: portrait){
+    .container-login{
+        display: flex;
+        min-height: 100vh;
+    }
+    
+    // LEFT
+    .login-left-side{
+        width: 50%;
+    }
+
+    // RIGHT
+    .login-right-side{
+        width: 50%;
+    }
+    
+    .login-right-side-child{
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .login-right-side h1{
+        font-size: $scream_scale;
+        line-height: 60px;
+    }
+    
+    .login-right-side p{
+        width: 80%;
+    }
+  }
+
+  @media only screen and (max-width: 650px) and (orientation: portrait){
+    .container-login{
+        display: flex;
+        min-height: 100vh;
+        flex-wrap: wrap-reverse;
+    }
+    
+    // LEFT
+    .login-left-side{
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .login-left-side button{
+        width: 100%;
+    }
+
+    // RIGHT
+    .login-right-side{
+        width: 100%;
+    }
+    
+    .login-right-side-child{
+        width: 80%;
+        margin: 0 auto;
+        padding: 10px;
+    }
+
+    .login-right-side h1{
+        font-size: 3em;
+        line-height: 60px;
+    }
+    
+    .login-right-side p{
+        width: 100%;
+    }
+  }

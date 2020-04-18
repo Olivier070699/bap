@@ -14,6 +14,7 @@
     .container-dashboard-right{
         width: 25%;
     }
+
     .container-clock{
         height: 160px;
         display: flex;
@@ -85,7 +86,7 @@
                 transition: ease 0.2s;
             }
 
-            .icon-close-todo:hover,{
+            .icon-close-todo:hover{
                 cursor: pointer;
                 transform: scale(0.9);
             }
@@ -162,4 +163,32 @@
             }
         }
     }
+}
+
+@media only screen and (max-width: 800px) and (orientation: portrait){
+    .container-dashboard-work-body{
+        flex-wrap: wrap;
+    
+        .container-dashboard-left{
+            width: 100%;
+            margin-right: 0;
+        }
+    
+        .container-dashboard-right{
+            margin: 5% 0;
+            width: 100%;
+        }
+    
+        .container-clock{
+            width: 100%;
+        }
+    
+        .container-todo{
+            margin-top: 5%;
+        }
+    }  
+}
+
+  @media only screen and (max-width: 650px) and (orientation: portrait){
+    
 }

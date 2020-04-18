@@ -11,14 +11,6 @@
     position: relative;
 }
 
-// .container-artist:first-child{
-//     margin: 0 6.25% 0 0;
-// }
-
-// .container-artist:last-child{
-//     margin: 0 0 0 6.25%;
-// }
-
 .container-artist-image{
     height: 250px;
     background-image: url('/images/placeholder-background.png');
@@ -29,6 +21,7 @@
 
     img{
         width: 100%;
+        height: 100%;
         border-radius: 25px;
     }
 }
@@ -69,3 +62,29 @@
 }
 
 // PLACEHOLDER POSITION AANPASSEN
+
+@media only screen and (max-width: 800px){
+    
+    .container-showOwnArtist-child{
+        width: calc(90% - 120px);
+        margin: 75px 0 0 120px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .container-artist{
+        width: 100%;
+        margin: 0 1% 180px 1%;
+        position: relative;
+    }
+}
+
+  @media only screen and (max-width: 650px) and (orientation: portrait){
+    .container-showOwnArtist-child{
+        width: 95%;
+        margin: 75px auto 0 auto;
+    }
+    
+}
+
+// IMAGE NIE UITREKKEN
