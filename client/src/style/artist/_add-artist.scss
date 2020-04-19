@@ -47,7 +47,7 @@
     table td{
         font-family: 'light';
         text-align: left;
-        padding: 12px 0 12px 75px;
+        padding: 12px 12px 12px 75px;    
     }
 }
 
@@ -90,4 +90,31 @@
 .invite-artist:hover{
     transform: scale(0.9);
     cursor: pointer;
+}
+
+.table-scrollable{
+    overflow-x:auto;
+}
+
+@media only screen and (max-width: 900px) and(orientation:landscape){ 
+    .container-addNewArtist-child{
+        li{
+            margin-right: 30px;
+        }
+    }
+}
+
+@media only screen and (max-width: 800px){ 
+    .container-addNewArtist-child{
+        width: 95%;
+        margin: 75px auto 0 auto;
+
+        .container-search{
+            display: none;
+        }
+
+        li{
+            margin-right: 30px;
+        }
+    }
 }

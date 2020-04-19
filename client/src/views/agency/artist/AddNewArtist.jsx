@@ -130,10 +130,11 @@ export class AddNewArtist extends Component {
                             </div>
                         </li>
                     </ul>
-
-                    <table id="table-content">
+                    <div className="table-scrollable">
+                        <table id="table-content">
                         
-                    </table>
+                        </table>
+                    </div>
                 </div>
                 <NotificationContainer/>
             </div>

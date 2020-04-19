@@ -4,7 +4,7 @@ import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 import '../../style/_general.scss'
 import firebase from '../../config/firebase'
 
-export class Navigation_mobile extends Component {
+export class Navigation_artist_mobile extends Component {
     
     openNav = (e) => {
         document.querySelector('.container-mobile-navigation ul').style.display = 'flex'
@@ -47,11 +47,9 @@ export class Navigation_mobile extends Component {
 
                 <ul>
                     <div>
-                        <li><a href="/dashboard-agency">dashboard</a></li>
-                        <li><a href="/artist-agency">artist</a></li>
-                        <li><a href="/client-agency">client</a></li>
-                        <li><a href="/calendar-agency">calendar</a></li>
-                        <li><a href="/settings-agency">settings</a></li>
+                        <li><a href="/dashboard-artist">dashboard</a></li>
+                        <li><a href="/calendar-artist">calendar</a></li>
+                        <li><a href="/settings-artist">settings</a></li>
                         <li className="responsive-logout" onClick={this.logout}>logout</li>
                     </div>
                 </ul>
@@ -60,4 +58,4 @@ export class Navigation_mobile extends Component {
     }
 }
 
-export default Navigation_mobile
+export default Navigation_artist_mobile

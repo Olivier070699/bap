@@ -104,7 +104,9 @@ export class List extends Component {
                             <li className="artist-filter-active" onClick={this.selectView}>Shows this week</li>
                             <li onClick={this.selectView}>Shows this month</li>
                         </ul>
-                        <table className="table-bill-content"></table>
+                        <div className="table-scrollable">
+                            <table className="table-bill-content"></table>
+                        </div>
                     </div>
                 </div>
             </div>

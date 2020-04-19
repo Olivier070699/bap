@@ -39,18 +39,31 @@ export class Header extends Component {
                     }
               });
             });
+
+            // ARTIST ID
+            firebase.database().ref('artist').on('value', snap => {
+                snap.forEach(childSnap => {
+                    const data = childSnap.val()
+                    if (data.user_id === uid) {
+                        localStorage.setItem('artist_key', childSnap.key)
+                        localStorage.setItem('agency_key', data.agency_key)
+                        localStorage.setItem('artist_db_key', data.db_user_id)
+                    }
+                });
+            })
         });
     }
 
     logout = () => {
-        firebase.auth().signOut()
-        .then((response) => {
-            console.log(response)
-            window.location.href = '/'
-        })
-        .catch((error) => {
-            console.log(error)
-        });
+        localStorage.clear();
+            firebase.auth().signOut()
+            .then((response) => {
+                console.log(response)
+                window.location.href = '/'
+            })
+            .catch((error) => {
+                console.log(error)
+            });
     }
 
     toggleMenu = () => {

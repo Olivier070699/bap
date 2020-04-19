@@ -8,6 +8,7 @@ import { faPlusCircle, faPenSquare, faTimesCircle  } from '@fortawesome/free-sol
 // COMPONENTS
 import Navigation from '../../components/Navigation_artist'
 import Header from '../../components/Header'
+import ResponsiveNav from '../../components/Navigation_artist_mobile'
 
 // CALENDAR COMPONENTS
 import Calendar from './Calendar'
@@ -17,6 +18,7 @@ export class Index extends Component {
     render() {
         return (
             <div>
+                <ResponsiveNav/>
                 <div className="header-dashboard">
                     <Header/>
                 </div>

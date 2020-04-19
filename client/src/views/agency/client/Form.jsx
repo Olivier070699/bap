@@ -207,7 +207,9 @@ export class Form extends Component {
                                 </div>
                             </li>
                         </ul>
-                        <table className="table-bill-content"></table>
+                        <div className="table-scrollable">
+                            <table className="table-bill-content"></table>
+                        </div>
                     </div>
                 </div>
             </div>
