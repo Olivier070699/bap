@@ -5,8 +5,9 @@
     flex-wrap: wrap;
 }
 
-.container-artist{
+.container-artist {
     width: 25%;
+    min-width: 250px;
     margin: 0 4% 220px 4%;
     position: relative;
 }
