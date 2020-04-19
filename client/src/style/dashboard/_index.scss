@@ -76,7 +76,7 @@
   }
   
   .tooltip-navigation .tooltiptextright {
-    visibility: hidden;
+    display: none;
     width: 120px;
     background-color: $black;
     color: #fff;
@@ -101,7 +101,7 @@
     border-color: transparent black transparent transparent;
   }
   .tooltip-navigation:hover .tooltiptextright {
-    visibility: visible;
+    display: block;
   }
 
 .navigation li{
