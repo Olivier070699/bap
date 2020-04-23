@@ -6,6 +6,11 @@ import firebase from '../../../config/firebase'
 
 export class Notifications extends Component {
 
+    state = {
+        view: false,
+        length: ''
+    }
+
     componentDidMount = () => {
         document.querySelector('.container-notifications-content').classList.add('hide')
         let uid = localStorage.getItem('uid')
@@ -23,9 +28,9 @@ export class Notifications extends Component {
             });
             let length = amountInvitations.length
             document.querySelector('.amount-of-notifications').innerHTML = length
-            if (length !== 0) {
-                document.querySelector('.container-notifications-content').classList.remove('hide')
-            }
+            this.setState({
+                length,
+            })
             this.renderEventListeners()
         })
     }
@@ -40,6 +45,9 @@ export class Notifications extends Component {
         removeBtns.forEach(removeBtn => {
             removeBtn.addEventListener('click', this.removeInvitation)
         });
+
+        let notificationIcon = document.querySelector('.notification-icon')
+        notificationIcon.addEventListener('click', this.toggleView)
     }
 
     acceptInvitation = (e) => {
@@ -48,12 +56,24 @@ export class Notifications extends Component {
             agency_key: e.target.id
         })
         firebase.database().ref(`invite_artist/${e.target.parentNode.id}`).remove()
-        this.componentDidMount()
     }
 
     removeInvitation = (e) => {
         firebase.database().ref(`invite_artist/${e.target.parentNode.id}`).remove()
-        this.componentDidMount()
+    }
+
+    toggleView = () => {
+        if (this.state.view === false && this.state.length !== 0) {
+            document.querySelector('.container-notifications-content').classList.remove('hide')
+            this.setState({
+                view: true
+            })
+        } else if (this.state.view === true && this.state.length !== 0) {
+            document.querySelector('.container-notifications-content').classList.add('hide')
+            this.setState({
+                view: false
+            })
+        }
     }
 
     render() {
@@ -75,3 +95,5 @@ export class Notifications extends Component {
 }
 
 export default Notifications
+
+// IF NOTIFICATION = 0, HIDE section

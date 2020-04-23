@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import firebase from '../../../config/firebase'
 import '../../../style/_general.scss'
 import jsPDF from 'jspdf'
+import axios from 'axios'
+
 
 export class Form extends Component {
     
@@ -30,8 +32,12 @@ export class Form extends Component {
                 let data = childsnap.val()
                 if (agencyKey === data.agency_key && data.payment_status !== "") {
                     firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
-                        let datum = data.start.substring( 0, data.start.indexOf( "T" ) );
-                        let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td>send payment reminder</td></tr>`
+                        let datum = data.start.substring(0, data.start.indexOf("T"));
+                        let paymentReminder = `<td></td>`
+                        if (data.payment_status === 'Open') {
+                            paymentReminder = `<td class="send-reminder invite-artist">send payment reminder</td>`
+                        }
+                        let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td>${paymentReminder}</tr>`
                         document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
                     })
                 }
@@ -39,6 +45,7 @@ export class Form extends Component {
         })
         setTimeout(() => {
             this.renderEventListeners()
+            this.orderFormByDate()
         }, 1500);
     }
 
@@ -62,7 +69,38 @@ export class Form extends Component {
         })
         setTimeout(() => {
             this.renderEventListeners()
+            this.orderFormByDate()
         }, 1500);
+    }
+
+    orderFormByDate() {
+        console.log(document.querySelectorAll('.content-client'))
+        let table, rows, switching, i, x, y, shouldSwitch
+        let columNumber = 1
+
+        table = document.querySelector(".table-bill-content");
+        switching = true;
+
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            
+            for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            
+            x = rows[i].getElementsByTagName("TD")[columNumber];
+            y = rows[i + 1].getElementsByTagName("TD")[columNumber];
+            
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            }
+        }
     }
 
     renderEventListeners = () => {
@@ -75,6 +113,11 @@ export class Form extends Component {
         let paymentStatusBtns = document.querySelectorAll('.btn-payment_status')
         paymentStatusBtns.forEach(paymentStatusBtn => {
             paymentStatusBtn.addEventListener('click', this.changePaymentStatus)
+        });
+
+        let sendReminderBtns = document.querySelectorAll('.send-reminder')
+        sendReminderBtns.forEach(sendReminderBtn => {
+            sendReminderBtn.addEventListener('click', this.sendReminderMail)
         });
     }
 
@@ -137,6 +180,32 @@ export class Form extends Component {
 
         doc.save(`${this.state.eventName} - ${this.state.artistName}`)
     
+    }
+
+    sendReminderMail = (e) => {
+        console.log(e.target.parentNode.id)
+        let receiver = 'olivier.decock1@hotmail.com'
+        let subject = `e.target.parentNode.id`
+        let body = `e.target.parentNode.id`
+      
+        const instance = axios.create({
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+        console.log(instance)
+        instance.post('http://od.mediabelgium.be/home/sendmail',{
+          Receiver: receiver,
+          Subject: subject,
+          Body: body
+          })
+          .then(function (response) {
+          console.log(response);
+          })
+          .catch(function (error) {
+          console.log(error);
+          console.log(error.response.status)
+        });
     }
 
     changePaymentStatus = (e) => {

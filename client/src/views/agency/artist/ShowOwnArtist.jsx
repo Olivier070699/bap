@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import '../../../style/_general.scss'
 import firebase from '../../../config/firebase'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 export class ShowOwnArtist extends Component {
     
@@ -13,11 +15,32 @@ export class ShowOwnArtist extends Component {
                 const data = childSnapshot.val();
                 if (agencyKey === data.agency_key) {
                     let bio = data.bio.replace(/^(.{140}[^\s]*).*/, "$1") + "\n";
-                    let content = `<div class="container-artist"><div class="container-artist-image"><img src="${data.artist_image}"></div><div class="container-artist-text"><div class="container-artist-text-child"><h1>${data.artist_name}</h1><p class="artist-bioSnippet">${bio}...</p></div></div></div>`
+                    let content = `<div id=${childSnapshot.key} class="container-artist"><div class="container-artist-image"><img src="${data.artist_image}"></div><div class="container-artist-text"><div class="container-artist-text-child"><h1>${data.artist_name}</h1><p class="artist-bioSnippet">${bio}...</p></div></div></div>`
                     artistContainer.insertAdjacentHTML('beforeend', content)
                 }
-          });
+            });
+            this.renderEventListeners()
         })
+    }
+
+    renderEventListeners = () => {
+        let artists = document.querySelectorAll('.container-artist')
+        artists.forEach(artist => {
+            artist.addEventListener('click', this.showArtistDetail)
+        });
+    }
+
+    showArtistDetail = (e) => {
+        let key = e.target.id
+        firebase.database().ref(`artist/${key}`).on('value', snap => {
+            document.querySelector('.container-artist-detail div').innerHTML = ''
+            const data = snap.val()
+            console.log(data)
+            let content = `<h1>${data.artist_name}</h1><p>${data.bio}</p>`
+            document.querySelector('.container-artist-detail div').insertAdjacentHTML('beforeend', content)
+        })
+        document.querySelector('.container-showOwnArtist-child').classList.add('blur')
+        document.querySelector('.container-artist-detail').classList.remove('hide')
     }
 
     editArtist = (e) => {
@@ -29,12 +52,22 @@ export class ShowOwnArtist extends Component {
         document.querySelector('.container-showOwnArtist').classList.add('hide')
         document.querySelector('.container-edit-artist').classList.remove('hide')
     }
+
+    close() {
+        document.querySelector('.container-showOwnArtist-child').classList.remove('blur')
+        document.querySelector('.container-artist-detail').classList.add('hide')
+    }
     
     render() {
         return (
             <div className="container-showOwnArtist">
-                <div className="container-showOwnArtist-child">
-                    
+                <div className="container-showOwnArtist-child"></div>
+                <div className="container-artist-detail hide">
+                    <FontAwesomeIcon
+                        icon={faTimesCircle}
+                        onClick={this.close}
+                    />
+                    <div></div>
                 </div>
             </div>
         )

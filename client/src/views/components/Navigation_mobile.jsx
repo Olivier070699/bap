@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faThList, faTimes } from '@fortawesome/free-solid-svg-icons'
 import '../../style/_general.scss'
 import firebase from '../../config/firebase'
 
@@ -34,7 +34,7 @@ export class Navigation_mobile extends Component {
         return (
             <div className="container-mobile-navigation">
                 <FontAwesomeIcon
-                    icon={faBars}
+                    icon={faThList}
                     onClick={this.openNav}
                     className="icon-mobile-nav open"
                 />

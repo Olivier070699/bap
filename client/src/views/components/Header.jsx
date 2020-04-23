@@ -18,6 +18,19 @@ export class Header extends Component {
             if (!user) {
                 window.location = '/login'
             }
+
+            let type
+            firebase.database().ref('user').on('value', snap => {
+                snap.forEach(childSnap => {
+                    if (childSnap.val().id === user.uid) {
+                        type = childSnap.val().type
+                    }
+                });
+                if (!window.location.pathname.includes(type)) {
+                    window.location = `/dashboard-${type}`
+                }
+            })
+
             let email = user.email
             let name = user.displayName
             let uid = user.uid

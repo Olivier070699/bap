@@ -10,7 +10,18 @@
     min-width: 250px;
     margin: 0 4% 220px 4%;
     position: relative;
+    transition: ease 0.2s;
+
+    *{
+        pointer-events: none;
+    }
 }
+
+.container-artist:hover {
+    cursor: pointer;
+    transform: scale(0.9);
+}
+
 
 .container-artist-image{
     height: 250px;
@@ -54,16 +65,48 @@
     font-family: 'light';
 }
 
-.artist-amountOfShows{
-    font-family: 'regular';
-    text-align: right;
-}
+.container-artist-detail{
+    width: 75%;
+    margin: 0 0 0 6%;
+    background-color: $white;
+    color: $black;
+    padding: 20px;
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    -webkit-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.75);
+   
+    h1{
+        font-family: 'regular';
+    }
 
-.artist-amountOfShows span{
-    font-family: 'bold';
-}
+    p{
+        font-family: 'light';
+        text-align: justify;
+    }
 
-// PLACEHOLDER POSITION AANPASSEN
+    svg{
+        font-size: 30px;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #FFFFFF;
+        transition: ease 0.2s;
+    }
+
+    svg:hover{
+        cursor: pointer;
+        transform: scale(0.9);
+    }
+}
 
 @media only screen and (max-width: 800px){
     
@@ -79,6 +122,10 @@
         margin: 0 1% 180px 1%;
         position: relative;
     }
+
+    .container-artist-detail{
+        display: none;
+    }
 }
 
   @media only screen and (max-width: 650px){
@@ -86,7 +133,6 @@
         width: 95%;
         margin: 75px auto 0 auto;
     }
-    
 }
 
 // IMAGE NIE UITREKKEN
