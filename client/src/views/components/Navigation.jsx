@@ -22,8 +22,7 @@ export class Navigation extends Component {
         return (
             <div>
                  <ul>
-                    <a className="a-tag tooltip-navigation" href="/dashboard-agency"><li className="nav-icon dashboard"><FontAwesomeIcon icon={faThList}/></li><span class="tooltiptextright">dashboard</span></a>
-                    <a className="a-tag tooltip-navigation" href="/artist-agency"><li className="nav-icon artist"><FontAwesomeIcon icon={faHeadphones}/></li><span class="tooltiptextright">artist</span></a>
+                    <a className="a-tag tooltip-navigation" href="/dashboard-agency"><li className="nav-icon dashboard"><FontAwesomeIcon icon={faHeadphones}/></li><span class="tooltiptextright">dashboard</span></a>
                     <a className="a-tag tooltip-navigation" href="/client-agency"><li className="nav-icon client"><FontAwesomeIcon icon={faHandshake}/></li><span class="tooltiptextright">client</span></a>
                     <a className="a-tag tooltip-navigation" href="/calendar-agency"><li className="nav-icon calendar"><FontAwesomeIcon icon={faCalendar}/></li><span class="tooltiptextright">calendar</span></a>
                     <a className="a-tag tooltip-navigation" href="/settings-agency"><li className="nav-icon settings"><FontAwesomeIcon icon={faWrench}/></li><span class="tooltiptextright">settings</span></a>

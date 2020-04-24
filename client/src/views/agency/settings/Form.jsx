@@ -40,6 +40,9 @@ export class Form extends Component {
                         })
                         document.getElementById('agency_name').value = data.agency_name
                         document.getElementById('bookingsfee').value = data.bookingsfee
+                        if (data.account_number) {
+                            document.getElementById('account_number').value = data.account_number
+                        }
                     }
               });
             })
@@ -54,12 +57,16 @@ export class Form extends Component {
         let tel = document.getElementById('tel').value
         let email = document.getElementById('email').value
         let password = document.getElementById('password').value
+        let account_number = document.getElementById('account_number').value
         
         // UPDATE ACCOUNT
         var user = firebase.auth().currentUser;
         user.updateEmail(email)
         if (password) {
             user.updatePassword(password)
+                .then(() => {
+                    firebase.auth().signInWithEmailAndPassword(email, password)
+            })
         }
 
         // UPDATE DB
@@ -72,6 +79,10 @@ export class Form extends Component {
         firebase.database().ref(`agency/${this.state.agency_id}`).update({
             agency_name,
             bookingsfee,
+            account_number,
+        })
+        .then(() => {
+            NotificationManager.success('Updated succesfully.', 'Succeeded!');
         })
     }
     render() {
@@ -79,9 +90,10 @@ export class Form extends Component {
             <div className="container-settings">
                 <form onSubmit={this.updateProfile}>
                     <input id="agency_name" type="text" placeholder="agency name" />
-                    <input id="bookingsfee" type="number" placeholder="bookingsfee (%)" />
+                    <input id="bookingsfee" type="number" placeholder="booking fee (%)" />
                     <input id="adres" type="text" placeholder="adres" />
                     <input id="tel" type="number" placeholder="tel" />
+                    <input id="account_number" type="text" placeholder="account number" />
 
                     <input id="email" type="email" placeholder="email" />
                     <input id="password" type="password" placeholder="xxxxxxxxxx" />

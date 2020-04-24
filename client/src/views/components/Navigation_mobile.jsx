@@ -48,7 +48,6 @@ export class Navigation_mobile extends Component {
                 <ul>
                     <div>
                         <li><a href="/dashboard-agency">dashboard</a></li>
-                        <li><a href="/artist-agency">artist</a></li>
                         <li><a href="/client-agency">client</a></li>
                         <li><a href="/calendar-agency">calendar</a></li>
                         <li><a href="/settings-agency">settings</a></li>

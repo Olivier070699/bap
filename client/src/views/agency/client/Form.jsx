@@ -3,6 +3,8 @@ import firebase from '../../../config/firebase'
 import '../../../style/_general.scss'
 import jsPDF from 'jspdf'
 import axios from 'axios'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 
 export class Form extends Component {
@@ -20,14 +22,10 @@ export class Form extends Component {
     }
     
     componentDidMount = () => {
-        this.loadAll()
-    }
-
-    loadAll = () => {
         let agencyKey = localStorage.getItem('agency_key')
-        document.querySelector('.table-bill-content').innerHTML = '';
-        document.querySelector('.table-bill-content').innerHTML = '<tr><th>Event</th><th>Date</th><th>Payment status</th><th></th><th></th></tr>'
         firebase.database().ref(`events`).on('value', snap => {
+            document.querySelector('.table-bill-content').innerHTML = '';
+            document.querySelector('.table-bill-content').innerHTML = '<tr><th>Event</th><th>Date</th><th>Payment status</th><th></th><th></th></tr>'
             snap.forEach(childsnap => {
                 let data = childsnap.val()
                 if (agencyKey === data.agency_key && data.payment_status !== "") {
@@ -42,35 +40,33 @@ export class Form extends Component {
                     })
                 }
             });
-        })
-        setTimeout(() => {
+           setTimeout(() => {
             this.renderEventListeners()
             this.orderFormByDate()
-        }, 1500);
+           }, 1500);
+        })
     }
 
     loadOpenPayments = () => {
         let agencyKey = localStorage.getItem('agency_key')
-        document.querySelector('.table-bill-content').innerHTML = '';
-        document.querySelector('.table-bill-content').innerHTML = '<tr><th class="filter-sort">Event</th><th class="filter-sort">Date</th><th>Payment status</th><th></th><th></th></tr>'
         firebase.database().ref(`events`).on('value', snap => {
+            document.querySelector('.table-bill-content').innerHTML = '';
+            document.querySelector('.table-bill-content').innerHTML = '<tr><th class="filter-sort">Event</th><th class="filter-sort">Date</th><th>Payment status</th><th></th><th></th></tr>'
             snap.forEach(childsnap => {
                 let data = childsnap.val()
                 if (agencyKey === data.agency_key  && data.payment_status !== "") {
                     firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
                         if (data.payment_status === 'Open') {
                             let datum = data.start.substring(0, data.start.indexOf("T"));
-                            let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td>send payment reminder</td></tr>`
+                            let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td class="send-reminder invite-artist">send payment reminder</td></tr>`
                             document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)
                         }
                     })
                 }
-            });
+            })
         })
-        setTimeout(() => {
-            this.renderEventListeners()
-            this.orderFormByDate()
-        }, 1500);
+        this.renderEventListeners()
+        this.orderFormByDate()
     }
 
     orderFormByDate() {
@@ -179,33 +175,47 @@ export class Form extends Component {
         doc.text(`to pay: €${totalPrice}`, 20, 80);
 
         doc.save(`${this.state.eventName} - ${this.state.artistName}`)
-    
     }
 
     sendReminderMail = (e) => {
-        console.log(e.target.parentNode.id)
-        let receiver = 'olivier.decock1@hotmail.com'
-        let subject = `e.target.parentNode.id`
-        let body = `e.target.parentNode.id`
-      
-        const instance = axios.create({
-          headers: {
-            "Content-Type": "application/json",
-          }
+        let receiver, subject, body, bookingfee, accountnumber
+
+        firebase.database().ref(`events/${e.target.parentNode.id}`).on('value', snap => {
+            const event = snap.val()
+
+            firebase.database().ref(`agency/${event.agency_key}`).on('value', snapShot => {
+                bookingfee = snapShot.val().bookingsfee
+                accountnumber = snapShot.val().account_number
+            })
+ 
+            firebase.database().ref(`artist/${event.artist}`).on('value', snapshot => {
+                const artist = snapshot.val()
+                let date = event.start.substring(0, event.start.indexOf("T"));
+                let price = Number(artist.price) + ((Number(artist.price)/100)*Number(bookingfee))
+
+                receiver = event.client_email
+                subject = `${event.event} - ${artist.artist_name}`
+                body = `Hi. We've noticed that you didn't pay your invoice from ${date}. Please transfer the outstandig amount of €${price} to ${accountnumber}.`
+            })
+            console.log(receiver, subject, body, bookingfee)
+            const instance = axios.create({
+                headers: {
+                  "Content-Type": "application/json",
+                }
+              })
+              instance.post('http://od.mediabelgium.be/home/sendmail',{
+                Receiver: receiver,
+                Subject: subject,
+                Body: body
+                })
+                .then(function (response) {
+                    NotificationManager.success('Sended reminder succesfully.', 'Succeeded!');
+                })
+                .catch(function (error) {
+                console.log(error);
+                console.log(error.response.status)
+              });
         })
-        console.log(instance)
-        instance.post('http://od.mediabelgium.be/home/sendmail',{
-          Receiver: receiver,
-          Subject: subject,
-          Body: body
-          })
-          .then(function (response) {
-          console.log(response);
-          })
-          .catch(function (error) {
-          console.log(error);
-          console.log(error.response.status)
-        });
     }
 
     changePaymentStatus = (e) => {
@@ -252,7 +262,7 @@ export class Form extends Component {
         e.target.classList.add('artist-filter-active')
 
         if (e.target.innerHTML === 'All events') {
-            this.loadAll()
+            this.componentDidMount()
         } else {
             this.loadOpenPayments()
         }
@@ -281,6 +291,7 @@ export class Form extends Component {
                         </div>
                     </div>
                 </div>
+                <NotificationContainer />
             </div>
         )
     }

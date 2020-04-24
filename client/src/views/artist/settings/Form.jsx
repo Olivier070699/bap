@@ -38,6 +38,16 @@ export class Form extends Component {
     updateProfile = (e) => {
         e.preventDefault()
         
+        let email = document.getElementById('email').value
+        let password = document.getElementById('password').value
+        var user = firebase.auth().currentUser;
+        user.updateEmail(email)
+        if (password) {
+            user.updatePassword(password)
+                .then(() => {
+                    firebase.auth().signInWithEmailAndPassword(email, password)
+            })
+        }
         let uid_db = localStorage.getItem('artist_db_key')
         let artistKey = localStorage.getItem('artist_key')
 

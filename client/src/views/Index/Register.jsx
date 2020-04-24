@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import firebase from '../../config/firebase'
 import '../../style/_general.scss'
 
-import Index_RightSideView from './components/Index_RightSide'
+import IndexRightSideView from './components/Index_RightSide'
 
 export class Register extends Component {
 
@@ -103,6 +103,7 @@ export class Register extends Component {
                         db_user_id:  result.path.pieces_[1],
                         agency_name: this.state.agency_name,
                         bookingsfee: this.state.bookingsfee,
+                        account_number: this.state.account_number
                     })
                 }
                 // ARTIST -> (id, user_id, artist_name, label_id, price, bio, date_of_birth, agency_id)
@@ -145,7 +146,8 @@ export class Register extends Component {
 
                             <div className="login-agency hide">
                                 <input id="agency_name" type="text" placeholder="agency name" onChange={this.logInfo} />
-                                <input id="bookingsfee" type="number" placeholder="bookingsfee (%)" onChange={this.logInfo} />    
+                                <input id="account_number" type="text" placeholder="BE68 5390 0754 7034" onChange={this.logInfo} />    
+                                <input id="bookingsfee" type="number" placeholder="booking fee (%)" onChange={this.logInfo} />    
                             </div>
 
                             <div className="login-artist hide">
@@ -168,7 +170,7 @@ export class Register extends Component {
                     </div>
                 </div>
                 <div className="login-right-side">
-                    <Index_RightSideView/>
+                    <IndexRightSideView/>
                 </div>
             </div>
         )

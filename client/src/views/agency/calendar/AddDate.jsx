@@ -28,10 +28,14 @@ export class AddDate extends Component {
        }
      }
    });
+
+   let getDate = calendar.getDate()
+   let date = JSON.stringify(getDate)
   
    this.setState({
      calendar,
      test: 0,
+     date: date.substring(10, 17),
    })
  
    // CLICK EVENTS
@@ -195,7 +199,6 @@ export class AddDate extends Component {
  today = () => {
    let calendar = this.state.calendar
    calendar.today();
-   this.sendMail()
  }
  
  next = () => {
@@ -229,36 +232,38 @@ export class AddDate extends Component {
  }
  
  // SEND MAIL
- sendMail = () => {
-   let receiver = this.state.client_email
-   let subject = `${this.state.event} - ${this.state.artist}`
-   let body = `This is an automatic reply. We confirm your booking request. ${this.state.artist} will be playing at ${this.state.event} from ${this.state.start} till ${this.state.stop}. Thx for having us!`
- 
-   const instance = axios.create({
-     headers: {
-       "Content-Type": "application/json",
-     }
+  sendMail = () => {
+   firebase.database().ref(`artist/${this.state.artist}`).on('value', snap => {
+     let receiver = this.state.client_email
+     let subject = `${this.state.event} - ${snap.val().artist_name}`
+     let body = `This is an automatic reply. We confirm your booking request. ${snap.val().artist_name} will be playing at ${this.state.event} from ${this.state.start} till ${this.state.stop}. Thx for having us!`
+
+     const instance = axios.create({
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    console.log(instance)
+    instance.post('http://od.mediabelgium.be/home/sendmail',{
+      Receiver: receiver,
+      Subject: subject,
+      Body: body
+      })
+      .then(function (response) {
+      console.log(response);
+      })
+      .catch(function (error) {
+      console.log(error);
+      console.log(error.response.status)
+    });
    })
-   console.log(instance)
-   instance.post('http://od.mediabelgium.be/home/sendmail',{
-     Receiver: receiver,
-     Subject: subject,
-     Body: body
-     })
-     .then(function (response) {
-     console.log(response);
-     })
-     .catch(function (error) {
-     console.log(error);
-     console.log(error.response.status)
-   });
  }
  
  render() {
    return (
      <div className="container-add-new-date">
-        
        <div className="container-calendar-navigation">
+        <p>{this.state.date}</p>
          <select onChange={this.changeView}>
            <option value="month">month</option>
            <option value="week">week</option>
@@ -313,9 +318,3 @@ export class AddDate extends Component {
 }
  
 export default AddDate
- 
-// FORM ON SUBMIT
-// UPDATE ARTIST NAME
- 
-// BIJ HET OPENEN UPDATE/NEW MEE GEVEN, ONSUBMIT VERWIJZEN NAAR DE JUISTE FUNCTIE OP HET EINDE UPDATE/NEW VERWIJDEREN
-

@@ -32,8 +32,7 @@ function App() {
         <Route path="/" component={LoginView} exact />
 
         {/* ROUTES AGENCY */}
-        <Route path="/dashboard-agency" component={DashboardAgencyView} exact />
-        <Route path="/artist-agency" component={ArtistAgencyView} exact />
+        <Route path="/dashboard-agency" component={ArtistAgencyView} exact />
         <Route path="/client-agency" component={ClientAgencyView} exact />
         <Route path="/calendar-agency" component={CalendarAgencyView} exact />
         <Route path="/settings-agency" component={SettingsAgencyView} exact />
