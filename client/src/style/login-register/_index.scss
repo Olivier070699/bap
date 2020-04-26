@@ -120,6 +120,13 @@
     width: 50%;
 }
 
+.logo-index{
+    width: 150px;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+}
+
 @media only screen and (max-width: 800px){
     .container-login{
         display: flex;

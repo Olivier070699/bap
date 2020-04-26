@@ -10,7 +10,7 @@ import 'react-notifications/lib/notifications.css';
 export class EditArtist extends Component {
 
     state = {
-        artistKey: ''
+        artistKey: '', 
     }
     
     componentDidMount = () => {
@@ -55,6 +55,8 @@ export class EditArtist extends Component {
         const fileName = e.target.files[0].name.replace(/\s+/g, '-').toLowerCase();
         const storageRef = firebase.storage().ref(`images/${key}/${fileName}`);
         
+        document.querySelector('.imageName').innerHTML = `${fileName}`
+
         storageRef.put(e.target.files[0]).then(() => {
             let imagePath = `images/${key}/${fileName}`;
             const storeImage = firebase.storage().ref(imagePath);
@@ -79,12 +81,15 @@ export class EditArtist extends Component {
             color
         })
         .then(() => { 
+            this.setState({
+                artistKey: ''
+            })
             NotificationManager.success('Update is successfully done.', 'Succeeded!');
+            document.querySelector('.container-edit-artist-child form').reset()
         })
         .catch((e) => {
             NotificationManager.error(e.message, 'Error!');
         })
-        document.querySelector('.container-edit-artist-child form').reset()
     }
 
     render() {
@@ -101,7 +106,11 @@ export class EditArtist extends Component {
                             </div>
                             <div className="container-edit-artist-right">
                                 <input type="file" id="artist_image" onChange={this.logPictureChanges}/>
-                                <p>select image here</p>
+                                <div>
+                                    <p>select image here</p>
+                                    <p className="imageName"></p> 
+                                </div>
+                                
                             </div>
                         </div>
                         <button onClick={this.updateArtist}>save</button>

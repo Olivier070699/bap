@@ -29,6 +29,7 @@ export class Navigation extends Component {
                     <a className="a-tag tooltip-navigation" href="/calendar-artist"><li className="nav-icon calendar"><FontAwesomeIcon icon={faCalendar}/></li><span class="tooltiptextright">calendar</span></a>
                     <a className="a-tag tooltip-navigation" href="/settings-artist"><li className="nav-icon settings"><FontAwesomeIcon icon={faWrench}/></li><span class="tooltiptextright">settings</span></a>
                 </ul>
+                <img src="/ease_black.svg" alt="ease logo"/>
             </div>
         )
     }

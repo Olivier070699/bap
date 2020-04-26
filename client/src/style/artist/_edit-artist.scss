@@ -88,7 +88,7 @@
         z-index: 2;
     }
 
-    p{
+    div{
         margin: 0;
         font-family: 'light';
         position: absolute;
@@ -96,6 +96,11 @@
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 1;
+        text-align: center;
+
+        p{
+            word-break: break-all;
+        }
     }
 }
 
@@ -147,7 +152,7 @@
             z-index: 2;
         }
 
-        p{
+        div{
             position: static;
             top: 0%;
             left: 0%;

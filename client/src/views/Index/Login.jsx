@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import firebase from '../../config/firebase'
 import '../../style/_general.scss'
 
-import Index_RightSideView from './components/Index_RightSide'
+import IndexRightSideView from './components/Index_RightSide'
 
 
 export class Login extends Component {
@@ -35,7 +35,31 @@ export class Login extends Component {
                             type: type,
                         })
                         firebase.auth().onAuthStateChanged(user => {
-                            if(user) {
+                            if (user) {  
+                                let uid = user.uid
+                                firebase.database().ref('/agency').on('value', snap => {
+                                    snap.forEach((childSnapshot) => {
+                                        const data = childSnapshot.val();
+                                        if (data.user_id === uid) {
+                                            localStorage.setItem('agency_id', data.id)
+                                            localStorage.setItem('agency_name', data.agency_name)
+                                            localStorage.setItem('agency_key', childSnapshot.key)
+                                        }
+                                });
+                                });
+
+                                // ARTIST ID
+                                firebase.database().ref('artist').on('value', snap => {
+                                    snap.forEach(childSnap => {
+                                        const data = childSnap.val()
+                                        if (data.user_id === uid) {
+                                            localStorage.setItem('artist_key', childSnap.key)
+                                            localStorage.setItem('agency_key', data.agency_key)
+                                            localStorage.setItem('artist_db_key', data.db_user_id)
+                                        }
+                                    });
+                                })
+
                               window.location = `/dashboard-${type}`;
                             }
                         });
@@ -65,7 +89,7 @@ export class Login extends Component {
                     </div>
                 </div>
                 <div className="login-right-side">
-                    <Index_RightSideView/>
+                    <IndexRightSideView/>
                 </div>
             </div>
         )
