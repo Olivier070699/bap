@@ -19,32 +19,30 @@ export class Form extends Component {
         agencyName: '',
         artistPrice: '',
         artistName: '',
-        eventID :''
+        eventID: '',
+        number: 0,
     }
     
     componentDidMount = () => {
-        let agencyKey = localStorage.getItem('agency_key')
-        firebase.database().ref(`events`).on('value', snap => {
-            document.querySelector('.table-bill-content').innerHTML = '';
-            document.querySelector('.table-bill-content').innerHTML = '<tr><th>Event</th><th>Date</th><th>Payment status</th><th></th><th></th></tr>'
-            snap.forEach(childsnap => {
-                let data = childsnap.val()
-                if (agencyKey === data.agency_key && data.payment_status !== "") {
-                    firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
+            let agencyKey = localStorage.getItem('agency_key')
+            firebase.database().ref(`events`).on('value', snap => {
+                document.querySelector('.table-bill-content').innerHTML = '';
+                document.querySelector('.table-bill-content').innerHTML = '<tr><th>Event</th><th>Date</th><th>Payment status</th><th></th><th></th></tr>'
+                snap.forEach(childsnap => {
+                    let data = childsnap.val()
+                    if (agencyKey === data.agency_key && data.payment_status !== "") {
                         let datum = data.start.substring(0, data.start.indexOf("T"));
                         let paymentReminder = `<td></td>`
                         if (data.payment_status === 'Open') {
                             paymentReminder = `<td class="send-reminder invite-artist">send payment reminder</td>`
                         }
-                        let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td>${paymentReminder}</tr>`
+                        let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td>${paymentReminder}</tr>`
                         document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)  
-                    })
-                }
-            });
-           setTimeout(() => {
-            this.renderEventListeners()
-           }, 1500);
-        })
+                    }
+                });
+                this.renderEventListeners()
+                this.orderFormByDate()
+            })
     }
 
     loadOpenPayments = () => {
@@ -54,19 +52,15 @@ export class Form extends Component {
             document.querySelector('.table-bill-content').innerHTML = '<tr><th class="filter-sort">Event</th><th class="filter-sort">Date</th><th>Payment status</th><th></th><th></th></tr>'
             snap.forEach(childsnap => {
                 let data = childsnap.val()
-                if (agencyKey === data.agency_key  && data.payment_status !== "") {
-                    firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
-                        if (data.payment_status === 'Open') {
-                            let datum = data.start.substring(0, data.start.indexOf("T"));
-                            let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td class="send-reminder">send payment reminder</td></tr>`
-                            document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)
-                        }
-                    })
+                if (agencyKey === data.agency_key  && data.payment_status !== "" && data.payment_status === 'Open') {
+                    let datum = data.start.substring(0, data.start.indexOf("T"));
+                    let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td class="send-reminder">send payment reminder</td></tr>`
+                    document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)
                 }
             })
+            this.renderEventListeners()
+            this.orderFormByDate()
         })
-        this.renderEventListeners()
-        this.orderFormByDate()
     }
 
     orderFormByDate() {
@@ -100,15 +94,14 @@ export class Form extends Component {
     }
 
     renderEventListeners = () => {
-        let downloadBillBtns = document.querySelectorAll('.download-bill')
-        console.log(downloadBillBtns)
-        downloadBillBtns.forEach(downloadBillBtn => {
-        downloadBillBtn.addEventListener('click', this.getBillInfo)
-        });
-        
         let paymentStatusBtns = document.querySelectorAll('.btn-payment_status')
         paymentStatusBtns.forEach(paymentStatusBtn => {
             paymentStatusBtn.addEventListener('click', this.changePaymentStatus)
+        });
+
+        let downloadBillBtns = document.querySelectorAll('.download-bill')
+        downloadBillBtns.forEach(downloadBillBtn => {
+        downloadBillBtn.addEventListener('click', this.getBillInfo)
         });
 
         let sendReminderBtns = document.querySelectorAll('.send-reminder')
@@ -117,8 +110,45 @@ export class Form extends Component {
         });
     }
 
+    changePaymentStatus = (e) => {
+        this.setState({
+            number: 1
+        })
+        let downloadBillBtns = document.querySelectorAll('.download-bill')
+        downloadBillBtns.forEach(downloadBillBtn => {
+        downloadBillBtn.removeEventListener('click', this.getBillInfo)
+        });
+
+        let sendReminderBtns = document.querySelectorAll('.send-reminder')
+        sendReminderBtns.forEach(sendReminderBtn => {
+            sendReminderBtn.removeEventListener('click', this.sendReminderMail)
+        });
+
+        let value = e.target.innerHTML
+        let eventID = e.target.parentNode.id
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+
+        if (value === 'Open') {
+            value = 'Paid'
+            today = dd + '/' + mm + '/' + yyyy;
+        } else if (value === 'Paid') {
+            value = 'Open'
+            today = ''
+        }
+
+        firebase.database().ref(`events/${eventID}`).update({
+            payment_status: value,
+            paydate: today,
+        })
+        this.setState({
+            number: 0
+        })
+    }
+
     getBillInfo = (e) => {
-        console.log('active')
         let eventID = e.target.parentNode.id
         this.setState({
             eventID,
@@ -140,7 +170,6 @@ export class Form extends Component {
             // AGENCY DATA
             firebase.database().ref(`agency/${agencyID}`).on('value', snap => {
                 let data = snap.val()
-                console.log(data.bookingsfee, data.agency_name)
                 this.setState({
                     bookingsfee: Number(data.bookingsfee),
                     agencyName: data.agency_name,
@@ -160,92 +189,71 @@ export class Form extends Component {
     }
 
     downloadPDF = () => {
-        let doc = new jsPDF('a4')
-        let totalPrice = this.state.artistPrice + (this.state.bookingsfee / 100 * this.state.artistPrice)
-        console.log(this.state.artistPrice, this.state.bookingsfee, this.state.artistPrice, this.state.agencyName)
+        if (this.state.number === 0) {
+            let doc = new jsPDF('a4')
+            let totalPrice = this.state.artistPrice + (this.state.bookingsfee / 100 * this.state.artistPrice)
+            console.log(this.state.artistPrice, this.state.bookingsfee, this.state.artistPrice, this.state.agencyName)
 
-        doc.autoTable({
-            columnStyles: { 0: { halign: 'center', } }, // Cells in first column centered and green
-            margin: { top: 10 },
-            body: [
-                ['Event:', this.state.eventName],
-                ['Adress:', this.state.adres],
-                ['', ''],
-                ['Artist:', this.state.artistName],
-                ['Start of the set:', this.state.start],
-                ['End of the set:', this.state.start],
-                ['', ''],
-                ['Price artist', this.state.artistPrice],
-                ['Booking fee', `${this.state.bookingsfee}%`],
-                ['Total price', totalPrice],
-            ],
-          })
-        doc.save(`${this.state.eventName} - ${this.state.artistName}`)
+            doc.autoTable({
+                columnStyles: { 0: { halign: 'center', } }, // Cells in first column centered and green
+                margin: { top: 10 },
+                body: [
+                    ['Event:', this.state.eventName],
+                    ['Adress:', this.state.adres],
+                    ['', ''],
+                    ['Artist:', this.state.artistName],
+                    ['Start of the set:', this.state.start],
+                    ['End of the set:', this.state.start],
+                    ['', ''],
+                    ['Price artist', this.state.artistPrice],
+                    ['Booking fee', `${this.state.bookingsfee}%`],
+                    ['Total price', totalPrice],
+                ],
+            })
+            doc.save(`${this.state.eventName} - ${this.state.artistName}`)
+        }
     }
 
     sendReminderMail = (e) => {
-        let receiver, subject, body, bookingfee, accountnumber
+        if (this.state.number === 0) {
+            let receiver, subject, body, bookingfee, accountnumber
+            firebase.database().ref(`events/${e.target.parentNode.id}`).on('value', snap => {
+                const event = snap.val()
 
-        firebase.database().ref(`events/${e.target.parentNode.id}`).on('value', snap => {
-            const event = snap.val()
-
-            firebase.database().ref(`agency/${event.agency_key}`).on('value', snapShot => {
-                bookingfee = snapShot.val().bookingsfee
-                accountnumber = snapShot.val().account_number
-            })
- 
-            firebase.database().ref(`artist/${event.artist}`).on('value', snapshot => {
-                const artist = snapshot.val()
-                let date = event.start.substring(0, event.start.indexOf("T"));
-                let price = Number(artist.price) + ((Number(artist.price)/100)*Number(bookingfee))
-
-                receiver = event.client_email
-                subject = `${event.event} - ${artist.artist_name}`
-                body = `Hi. We've noticed that you didn't pay your invoice from ${date}. Please transfer the outstandig amount of €${price} to ${accountnumber}.`
-            })
-            console.log(receiver, subject, body, bookingfee)
-            const instance = axios.create({
-                headers: {
-                  "Content-Type": "application/json",
-                }
-              })
-              instance.post('http://od.mediabelgium.be/home/sendmail',{
-                Receiver: receiver,
-                Subject: subject,
-                Body: body
+                firebase.database().ref(`agency/${event.agency_key}`).on('value', snapShot => {
+                    bookingfee = snapShot.val().bookingsfee
+                    accountnumber = snapShot.val().account_number
                 })
-                .then(function (response) {
-                    NotificationManager.success('Sended reminder succesfully.', 'Succeeded!');
+    
+                firebase.database().ref(`artist/${event.artist}`).on('value', snapshot => {
+                    const artist = snapshot.val()
+                    let date = event.start.substring(0, event.start.indexOf("T"));
+                    let price = Number(artist.price) + ((Number(artist.price)/100)*Number(bookingfee))
+
+                    receiver = event.client_email
+                    subject = `${event.event} - ${artist.artist_name}`
+                    body = `Hi. We've noticed that you didn't pay your invoice from ${date}. Please transfer the outstandig amount of €${price} to ${accountnumber}.`
                 })
-                .catch(function (error) {
-                console.log(error);
-                console.log(error.response.status)
-              });
-        })
-    }
-
-    changePaymentStatus = (e) => {
-        let value = e.target.innerHTML
-        let eventID = e.target.parentNode.id
-        let today = new Date();
-        let dd = String(today.getDate()).padStart(2, '0');
-        let mm = String(today.getMonth() + 1).padStart(2, '0');
-        let yyyy = today.getFullYear();
-
-        if (value === 'Open') {
-            value = 'Paid'
-            today = dd + '/' + mm + '/' + yyyy;
-        } else if (value === 'Paid') {
-            value = 'Open'
-            today = ''
+                console.log(receiver, subject, body, bookingfee)
+                const instance = axios.create({
+                    headers: {
+                    "Content-Type": "application/json",
+                    }
+                })
+                instance.post('http://od.mediabelgium.be/home/sendmail',{
+                    Receiver: receiver,
+                    Subject: subject,
+                    Body: body
+                    })
+                    .then(function (response) {
+                        NotificationManager.success('Sended reminder succesfully.', 'Succeeded!');
+                    })
+                    .catch(function (error) {
+                    console.log(error);
+                    console.log(error.response.status)
+                });
+            })
         }
-
-        firebase.database().ref(`events/${eventID}`).update({
-            payment_status: value,
-            paydate: today,
-        })
-
-        this.componentDidMount()
     }
 
     search = (e) => {
@@ -304,9 +312,3 @@ export class Form extends Component {
 }
 
 export default Form
-
-// PAY DATE
-// RENDER EVENT LISTENERS
-// SET TIME OUT MOET WEG!!!
-
-// PAYMENT STATUS BY SEARCH OF OPEN PAYMENTS  IS FOKT 
