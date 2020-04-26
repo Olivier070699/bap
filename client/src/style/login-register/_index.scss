@@ -125,6 +125,7 @@
     position: fixed;
     right: 20px;
     bottom: 20px;
+    pointer-events: none;
 }
 
 @media only screen and (max-width: 800px){

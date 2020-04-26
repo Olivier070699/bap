@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faWrench, faCalendar, faThList, faHandshake, faHeadphones } from '@fortawesome/free-solid-svg-icons'
+import { faWrench, faCalendar, faHandshake, faHeadphones } from '@fortawesome/free-solid-svg-icons'
 
 export class Navigation extends Component {
     
@@ -22,10 +22,10 @@ export class Navigation extends Component {
         return (
             <div>
                  <ul>
-                    <a className="a-tag tooltip-navigation" href="/dashboard-agency"><li className="nav-icon dashboard"><FontAwesomeIcon icon={faHeadphones}/></li><span class="tooltiptextright">dashboard</span></a>
-                    <a className="a-tag tooltip-navigation" href="/client-agency"><li className="nav-icon client"><FontAwesomeIcon icon={faHandshake}/></li><span class="tooltiptextright">client</span></a>
-                    <a className="a-tag tooltip-navigation" href="/calendar-agency"><li className="nav-icon calendar"><FontAwesomeIcon icon={faCalendar}/></li><span class="tooltiptextright">calendar</span></a>
-                    <a className="a-tag tooltip-navigation" href="/settings-agency"><li className="nav-icon settings"><FontAwesomeIcon icon={faWrench}/></li><span class="tooltiptextright">settings</span></a>
+                    <a className="a-tag tooltip-navigation" href="/dashboard-agency"><li className="nav-icon dashboard"><FontAwesomeIcon icon={faHeadphones}/></li><span className="tooltiptextright">dashboard</span></a>
+                    <a className="a-tag tooltip-navigation" href="/client-agency"><li className="nav-icon client"><FontAwesomeIcon icon={faHandshake}/></li><span className="tooltiptextright">client</span></a>
+                    <a className="a-tag tooltip-navigation" href="/calendar-agency"><li className="nav-icon calendar"><FontAwesomeIcon icon={faCalendar}/></li><span className="tooltiptextright">calendar</span></a>
+                    <a className="a-tag tooltip-navigation" href="/settings-agency"><li className="nav-icon settings"><FontAwesomeIcon icon={faWrench}/></li><span className="tooltiptextright">settings</span></a>
                 </ul>
                 <img src="/ease_black.svg" alt="ease logo"/>
             </div>

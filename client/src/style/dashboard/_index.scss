@@ -49,6 +49,11 @@
         list-style-type: none;
         margin: 10px 0;
         transition: ease 0.2s;
+
+        a{
+            text-decoration: none;
+            color: $black             ;
+        }
     }
 
     li:hover, .icon-dropdown:hover{
@@ -78,6 +83,7 @@
         width: 150px;
         left: 10px;
         bottom: 10px;
+        pointer-events: none;
     }
 }
 

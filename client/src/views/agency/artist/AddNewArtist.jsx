@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import firebase from '../../../config/firebase'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimesCircle, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import '../../../style/_general.scss'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -143,6 +141,3 @@ export class AddNewArtist extends Component {
 }
 
 export default AddNewArtist
-
-
-// REMOVE ALL USERS - NEW USERS

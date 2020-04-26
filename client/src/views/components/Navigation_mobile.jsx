@@ -51,6 +51,7 @@ export class Navigation_mobile extends Component {
                         <li><a href="/client-agency">client</a></li>
                         <li><a href="/calendar-agency">calendar</a></li>
                         <li><a href="/settings-agency">settings</a></li>
+                        <li><a href="/privacy-policy">privacy policy</a></li>
                         <li className="responsive-logout" onClick={this.logout}>logout</li>
                     </div>
                 </ul>

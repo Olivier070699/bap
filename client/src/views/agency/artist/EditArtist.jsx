@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import '../../../style/_general.scss'
 import firebase from '../../../config/firebase'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 

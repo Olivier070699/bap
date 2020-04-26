@@ -194,17 +194,32 @@ export class AddDate extends Component {
  prev = (e) => {
    let calendar = this.state.calendar
    calendar.prev();
+   this.showMonthName()
  }
  
  today = () => {
    let calendar = this.state.calendar
    calendar.today();
+   this.showMonthName()
  }
  
  next = () => {
    let calendar = this.state.calendar
    calendar.next();
- }
+   this.showMonthName()
+  }
+  
+  showMonthName = () => {
+    let calendar = this.state.calendar
+    let getDate = calendar.getDate()
+    let date = JSON.stringify(getDate)
+  
+   this.setState({
+     calendar,
+     test: 0,
+     date: date.substring(10, 17),
+   })
+  }
  
  // TOGGLE BETWEEN CALENDAR VIEW
  changeView = (e) => {
@@ -233,7 +248,9 @@ export class AddDate extends Component {
  
  // SEND MAIL
   sendMail = () => {
-   firebase.database().ref(`artist/${this.state.artist}`).on('value', snap => {
+    let db_user_id
+    firebase.database().ref(`artist/${this.state.artist}`).on('value', snap => {
+     db_user_id = snap.val().db_user_id
      let receiver = this.state.client_email
      let subject = `${this.state.event} - ${snap.val().artist_name}`
      let body = `This is an automatic reply. We confirm your booking request. ${snap.val().artist_name} will be playing at ${this.state.event} from ${this.state.start} till ${this.state.stop}. Thx for having us!`
@@ -256,7 +273,33 @@ export class AddDate extends Component {
       console.log(error);
       console.log(error.response.status)
     });
-   })
+    })
+    
+    firebase.database().ref(`user/${db_user_id}`).on('value', snap => {
+      let data = snap.val()
+      let receiver = data.email
+      let subject = `New booking!`
+      let body = `You've just got booked! You'll play on ${this.state.event} from ${this.state.start} till ${this.state.stop}.`
+
+      const instance = axios.create({
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+      console.log(instance)
+      instance.post('http://od.mediabelgium.be/home/sendmail',{
+        Receiver: receiver,
+        Subject: subject,
+        Body: body
+        })
+        .then(function (response) {
+        console.log(response);
+        })
+        .catch(function (error) {
+        console.log(error);
+        console.log(error.response.status)
+      });
+      })
  }
  
  render() {

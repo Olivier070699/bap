@@ -11,7 +11,6 @@ export class Form extends Component {
     }
     
     componentDidMount = () => {
-        let uid = localStorage.getItem('uid')
         let uid_db = localStorage.getItem('artist_db_key')
         let artistKey = localStorage.getItem('artist_key')
 
@@ -89,7 +88,3 @@ export class Form extends Component {
 }
 
 export default Form
-
-// NotificationManager.info('Info message');
-// NotificationManager.success('Success message', 'Title here');
-// NotificationManager.error('Success message', 'Title here');

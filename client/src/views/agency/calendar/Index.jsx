@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import firebase from '../../../config/firebase'
 import '../../../style/_general.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faPenSquare, faTimesCircle  } from '@fortawesome/free-solid-svg-icons'
 import MobileNav from '../../components/Navigation_mobile'
 
 // COMPONENTS

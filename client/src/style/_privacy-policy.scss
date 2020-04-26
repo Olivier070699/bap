@@ -1,0 +1,33 @@
+.container-privacyPolicy{
+    color: $black;
+    width: 80%;
+    margin: 0 auto;
+    text-align: justify;
+
+    h1{
+        font-size: $h2;
+        font-family: 'bold';
+    }
+
+    p, li{
+        font-family: 'light';
+    }
+
+    a{
+        font-family: 'regular';
+        color: $blue;
+    }
+
+    svg{
+        font-size: 50px;
+        color: $black;
+        position: fixed;
+        left: 4%;
+        transition: ease 0.2s;
+    }
+
+    svg:hover{
+        cursor: pointer;
+        transform: scale(0.9);
+    }
+}

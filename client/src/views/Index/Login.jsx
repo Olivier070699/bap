@@ -16,7 +16,6 @@ export class Login extends Component {
 
     submitForm = (e) => {
         e.preventDefault()
-        let form = document.getElementById('login-form')
 
         const auth = firebase.auth();
         const promise = auth.signInWithEmailAndPassword(this.state.email, this.state.password);

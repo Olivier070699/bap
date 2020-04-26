@@ -50,6 +50,7 @@ export class Navigation_artist_mobile extends Component {
                         <li><a href="/dashboard-artist">dashboard</a></li>
                         <li><a href="/calendar-artist">calendar</a></li>
                         <li><a href="/settings-artist">settings</a></li>
+                        <li><a href="/privacy-policy">privacy policy</a></li>
                         <li className="responsive-logout" onClick={this.logout}>logout</li>
                     </div>
                 </ul>

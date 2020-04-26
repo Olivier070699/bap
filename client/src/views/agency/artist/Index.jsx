@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import firebase from '../../../config/firebase'
 import '../../../style/_general.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faPenSquare, faTimesCircle  } from '@fortawesome/free-solid-svg-icons'
 import MobileNav from '../../components/Navigation_mobile'
 
 // COMPONENTS
-import LogoutBtn from '../../components/Logout'
 import Navigation from '../../components/Navigation'
 import Header from '../../components/Header'
 
@@ -14,17 +12,6 @@ import Header from '../../components/Header'
 import AddNewArtist from './AddNewArtist'
 import ShowOwnArtist from './ShowOwnArtist'
 import EditArtist from './EditArtist'
-
-// var user = firebase.auth().currentUser;
-// var name, email, photoUrl, uid, emailVerified;
-
-// if (user != null) {
-//   name = user.displayName;
-//   email = user.email;
-//   photoUrl = user.photoURL;
-//   emailVerified = user.emailVerified;
-//   uid = user.uid; 
-// }
 
 export class Index extends Component {
 

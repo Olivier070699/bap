@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
 } from 'react-router-dom';
 
 // VIEWS
@@ -11,20 +10,19 @@ import LoginView from './views/Index/Login'
 import RegisterView from './views/Index/Register'
 
 // AGENCY
-import DashboardAgencyView from './views/agency/dashboard/Index'
 import ArtistAgencyView from './views/agency/artist/Index'
 import ClientAgencyView from './views/agency/client/Index'
 import CalendarAgencyView from './views/agency/calendar/Index'
 import SettingsAgencyView from './views/agency/settings/Index'
-import PDF from './views/agency/client/Pdf'
 
 // ARTIST
 import DashboardArtistView from './views/artist/dashboard/Index'
 import CalendarArtistView from './views/artist/calendar/Index'
 import SettingsArtistView from './views/artist/settings/Index'
 
-// 404
+// GENERAL
 import PageNotFound from './views/PageNotFound'
+import PrivacyPolicy from './views/PrivacyPolicy'
 
 function App() {
   return (
@@ -45,6 +43,7 @@ function App() {
         <Route path="/calendar-artist" component={CalendarArtistView} exact />
         <Route path="/settings-artist" component={SettingsArtistView} exact />
 
+        <Route path="/privacy-policy" component={PrivacyPolicy} exact />
         <Route path="*" component={PageNotFound}/>
       </Switch>
     </Router>

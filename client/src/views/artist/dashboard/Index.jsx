@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import firebase from '../../../config/firebase'
 import '../../../style/_general.scss'
 import List from './List'
 

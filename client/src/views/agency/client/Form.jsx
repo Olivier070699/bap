@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import firebase from '../../../config/firebase'
 import '../../../style/_general.scss'
 import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 import axios from 'axios'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -42,7 +43,6 @@ export class Form extends Component {
             });
            setTimeout(() => {
             this.renderEventListeners()
-            this.orderFormByDate()
            }, 1500);
         })
     }
@@ -58,7 +58,7 @@ export class Form extends Component {
                     firebase.database().ref(`artist/${data.artist}`).on('value', snapshot => {
                         if (data.payment_status === 'Open') {
                             let datum = data.start.substring(0, data.start.indexOf("T"));
-                            let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td class="send-reminder invite-artist">send payment reminder</td></tr>`
+                            let content = `<tr id="${childsnap.key}" class="content-client"><td class="event-name">${data.event} - ${snapshot.val().artist_name}</td><td>${datum}</td><td class="btn-payment_status">${data.payment_status}</td><td class="download-bill invite-artist">download invoice</td><td class="send-reminder">send payment reminder</td></tr>`
                             document.querySelector('.table-bill-content').insertAdjacentHTML('beforeend', content)
                         }
                     })
@@ -135,45 +135,51 @@ export class Form extends Component {
                 adres: data.adres,
                 start: data.start,
                 stop: data.stop,
-            })
-        })
 
-        // AGENCY DATA
-        firebase.database().ref(`agency/${agencyID}`).on('value', snap => {
-            let data = snap.val()
-            this.setState({
-                bookingsfee: Number(data.bookingsfee),
-                agencyName: data.agency_name,
             })
-        })
+            // AGENCY DATA
+            firebase.database().ref(`agency/${agencyID}`).on('value', snap => {
+                let data = snap.val()
+                console.log(data.bookingsfee, data.agency_name)
+                this.setState({
+                    bookingsfee: Number(data.bookingsfee),
+                    agencyName: data.agency_name,
+                })
 
-        // ARTIST DATA
-        firebase.database().ref(`artist/${artistID}`).on('value', snap => {
-            let data = snap.val()
-            this.setState({
-                artistPrice: Number(data.price),
-                artistName: data.artist_name,
+                 // ARTIST DATA
+                firebase.database().ref(`artist/${artistID}`).on('value', snap => {
+                    let data = snap.val()
+                    this.setState({
+                        artistPrice: Number(data.price),
+                        artistName: data.artist_name,
+                    })
+                    this.downloadPDF()
+                })
             })
-            this.downloadPDF()
         })
     }
 
     downloadPDF = () => {
         let doc = new jsPDF('a4')
-        // POSITION POSITION TEXT
-        let totalPrice = this.state.artistPrice +  (this.state.bookingsfee/100*this.state.artistPrice)
-        doc.setFontSize(16);
-        doc.text(`event: ${this.state.eventName}`, 20, 30);
-        doc.text(`artist: ${this.state.artistName}`, 20, 40);
-        doc.text(`hours: ${this.state.start} - ${this.state.stop}`, 20, 50);
-        doc.text(`adres: ${this.state.adres}`, 20, 60)
+        let totalPrice = this.state.artistPrice + (this.state.bookingsfee / 100 * this.state.artistPrice)
+        console.log(this.state.artistPrice, this.state.bookingsfee, this.state.artistPrice, this.state.agencyName)
 
-        doc.setFontSize(12);
-        doc.text(`artistprice: €${this.state.artistPrice}`, 20, 70);
-        doc.text(`bookingsfee: ${this.state.bookingsfee}%`, 20, 75);
-        doc.setFontSize(16);
-        doc.text(`to pay: €${totalPrice}`, 20, 80);
-
+        doc.autoTable({
+            columnStyles: { 0: { halign: 'center', } }, // Cells in first column centered and green
+            margin: { top: 10 },
+            body: [
+                ['Event:', this.state.eventName],
+                ['Adress:', this.state.adres],
+                ['', ''],
+                ['Artist:', this.state.artistName],
+                ['Start of the set:', this.state.start],
+                ['End of the set:', this.state.start],
+                ['', ''],
+                ['Price artist', this.state.artistPrice],
+                ['Booking fee', `${this.state.bookingsfee}%`],
+                ['Total price', totalPrice],
+            ],
+          })
         doc.save(`${this.state.eventName} - ${this.state.artistName}`)
     }
 
@@ -239,7 +245,7 @@ export class Form extends Component {
             paydate: today,
         })
 
-        this.loadAll()
+        this.componentDidMount()
     }
 
     search = (e) => {

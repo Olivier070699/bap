@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import firebase from '../../../config/firebase'
 import '../../../style/_general.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendarAlt,  } from '@fortawesome/free-solid-svg-icons'
 
 // COMPONENTS
 import Navigation from '../../components/Navigation'

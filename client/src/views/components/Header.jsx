@@ -81,7 +81,7 @@ export class Header extends Component {
                     onClick={this.toggleMenu}
                 />
                     <ul className="hide">
-                        <li>Privacy Policy</li>
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
                         <li onClick={this.logout}>Logout</li>
                     </ul>
                 </div>
