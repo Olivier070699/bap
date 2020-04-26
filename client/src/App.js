@@ -23,6 +23,9 @@ import DashboardArtistView from './views/artist/dashboard/Index'
 import CalendarArtistView from './views/artist/calendar/Index'
 import SettingsArtistView from './views/artist/settings/Index'
 
+// 404
+import PageNotFound from './views/PageNotFound'
+
 function App() {
   return (
     <Router>
@@ -42,6 +45,7 @@ function App() {
         <Route path="/calendar-artist" component={CalendarArtistView} exact />
         <Route path="/settings-artist" component={SettingsArtistView} exact />
 
+        <Route path="*" component={PageNotFound}/>
       </Switch>
     </Router>
   );

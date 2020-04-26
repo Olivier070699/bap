@@ -1,0 +1,38 @@
+.container-pageNotFound{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+
+    *{
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    h2{
+        font-family: 'bold';
+        font-size: $scream;
+        color: $blue;
+        margin: 0;
+    }
+
+    p{
+        font-family: 'light';
+        color: $black;
+    }
+
+    a{
+        font-family: 'light';
+        color: $black;
+        transition: ease 0.2s;
+    }
+
+    a:hover{
+        cursor: pointer;
+        transform: scale(0.9);
+    }
+}

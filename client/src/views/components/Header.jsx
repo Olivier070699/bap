@@ -40,30 +40,6 @@ export class Header extends Component {
                 name,
             })
             document.querySelector('.claim').innerHTML = "Hello " + this.state.name
-
-            // AGENCY ID
-            // firebase.database().ref('/agency').on('value', snap => {
-            //     snap.forEach((childSnapshot) => {
-            //         const data = childSnapshot.val();
-            //         if (data.user_id === uid) {
-            //             localStorage.setItem('agency_id', data.id)
-            //             localStorage.setItem('agency_name', data.agency_name)
-            //             localStorage.setItem('agency_key', childSnapshot.key)
-            //         }
-            //   });
-            // });
-
-            // // ARTIST ID
-            // firebase.database().ref('artist').on('value', snap => {
-            //     snap.forEach(childSnap => {
-            //         const data = childSnap.val()
-            //         if (data.user_id === uid) {
-            //             localStorage.setItem('artist_key', childSnap.key)
-            //             localStorage.setItem('agency_key', data.agency_key)
-            //             localStorage.setItem('artist_db_key', data.db_user_id)
-            //         }
-            //     });
-            // })
         });
     }
 
