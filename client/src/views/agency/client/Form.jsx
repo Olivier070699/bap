@@ -233,26 +233,38 @@ export class Form extends Component {
                     receiver = event.client_email
                     subject = `${event.event} - ${artist.artist_name}`
                     body = `Hi. We've noticed that you didn't pay your invoice from ${date}. Please transfer the outstandig amount of €${price} to ${accountnumber}.`
-                    console.log(receiver, subject, body)
-                    const instance = axios.create({
-                        headers: {
-                        "Content-Type": "application/json",
-                        }
+                    this.setState({
+                        receiver,
+                        subject,
+                        body
                     })
-                    instance.post('http://od.mediabelgium.be/home/sendmail',{
-                        Receiver: receiver,
-                        Subject: subject,
-                        Body: body
-                        })
-                        .then(function (response) {
-                            NotificationManager.success('Sended reminder succesfully.', 'Succeeded!');
-                        })
-                        .catch(function (error) {
-                        console.log(error);
-                        console.log(error.response.status)
-                    });
+                    console.log(receiver, subject, body)
+                    this.sendMail()
                 })
             })
+        }
+    }
+
+    sendMail = () => {
+        if (this.state.number === 0) {
+            console.log(this.state.receiver, this.state.subject, this.state.body)
+            const instance = axios.create({
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+            instance.post('http://od.mediabelgium.be/home/sendmail', {
+                Receiver: this.state.receiver,
+                Subject: this.state.subject,
+                Body: this.state.body
+            })
+                .then(function (response) {
+                    NotificationManager.success('Sended reminder succesfully.', 'Succeeded!');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    console.log(error.response.status)
+                });
         }
     }
 
