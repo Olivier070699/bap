@@ -45,7 +45,7 @@ export class AddNewArtist extends Component {
             sortTds.forEach(sortTd => {
                 sortTd.addEventListener('click', this.sortAlphabetic)
             });
-        }, 1500);
+        }, 2000);
     }
 
     inviteArtist = (e) => {
