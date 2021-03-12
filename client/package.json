@@ -31,7 +31,7 @@
     "firebase": "^7.12.0",
     "font-awesome": "^4.7.0",
     "http-proxy-middleware": "^1.0.3",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "jspdf-autotable": "^3.4.4",
     "jspdf-react": "^1.0.11",
     "material-ui": "^1.0.0-beta.47",
